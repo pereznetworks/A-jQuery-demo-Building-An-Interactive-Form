@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+// CONSTANT VALUES ------------------------------
+
   // build other Job Role input field
   const otherJobRoleInput = document.createElement("input");
   otherJobRoleInput.type = "text";
@@ -20,31 +22,35 @@ $(document).ready(function() {
   const blankOptGrp = document.createElement('optgroup');
   blankOptGrp.id = "blank";
   const blankOption = document.createElement('option');
-  blankOption.value = " ";
+  blankOption.value = "notheme";
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
+// FUNCTIONS -----------------------------------
+
   // move shirt options under respective opt groups
-  $('#color').children().each(function(i){
+  const getOptElements = function(){
+    $('#color').children().each(function(i){
 
-        if ($(this)[0].textContent.includes('JS Puns')) {
-          let optionValue = $(this)[0].value;
-          $(this)[0].textContent = optionValue;
-          jsPunsOptGrp.append($(this)[0]);
-          // $(this).remove('*');
-        }
-        if ($(this)[0].textContent.includes('JS shirt only')){
-          let optionValue = $(this)[0].value;
-          $(this)[0].textContent = optionValue;
-          jsShirtOnlyOptGrp.append($(this)[0]);
-          // $(this).remove('*');
-        }
-    }); // end $()each
+          if ($(this)[0].textContent.includes('JS Puns')) {
+            let optionValue = $(this)[0].value;
+            $(this)[0].class = 'js_puns';
+            $(this)[0].textContent = optionValue;
+            jsPunsOptGrp.append($(this)[0]);
+            // $(this).remove('*');
+          }
+          if ($(this)[0].textContent.includes('JS shirt only')){
+            let optionValue = $(this)[0].value;
+            $(this)[0].class = 'js_shirt_only';
+            $(this)[0].textContent = optionValue;
+            jsShirtOnlyOptGrp.append($(this)[0]);
+            // $(this).remove('*');
+          }
+      }); // end $()each
 
-  // add ONLY the blank option opt Group
-  $colorOptions.append(blankOptGrp);
+  };
 
-  // functon to put focus on the first form field, name, input field
+  // function to put focus on the first form field, name, input field
   const focusOnFirstField = function($node) {
     $node.focus();
   }; // end focusOnFirstField function
@@ -59,20 +65,33 @@ $(document).ready(function() {
       optFlag = shirtThemeOption;
     }
 
+    if ( $('#color option')[0].value === 'notheme' ){
+      $('#color').children().each(function(){
+        blankOptGrp.append($(this)[0]);
+      });
+    } else if ( $('#color option')[0].class === 'js_puns' ){
+      $('#color').children().each(function(){
+        jsPunsOptGrp.append($(this)[0]);
+      });
+    } else if ( $('#color option')[0].class === 'js_shirt_only' ){
+      $('#color').children().each(function(){
+        jsShirtOnlyOptGrp.append($(this)[0]);
+      });
+    }
+
     if (optFlag === 'js puns'){
-          $('#color optgroup').remove();
-          $('#color option').remove();
           $node.append(jsPunsOptGrp.children);
 
     } else if (optFlag === 'heart js'){
-          $('#color optgroup').remove();
-          $('#color option').remove();
           $node.append(jsShirtOnlyOptGrp.children);
     }
 
   }; // end addColorOptGroups function
 
-  // if Job Title changed to 'other' display other Job Role input field
+// EVENT LISTENERS ----------------------------
+
+  // event listener for
+    // if Job Title changed to 'other' display other Job Role input field
   $('#title').change(function() {
 
     if ($(this).val() === 'other') {
@@ -81,7 +100,8 @@ $(document).ready(function() {
 
   });  // end job title addEventListener
 
-  // display only shirt colors that go with Shirt design theme
+  // event listener for
+    // displaying only shirt colors that go with Shirt design theme
   $('#design').change(function() {
 
     $('#design option:selected').each(function(){
@@ -96,7 +116,16 @@ $(document).ready(function() {
 
   }) // end shirt design addEventListener
 
-  focusOnFirstField($nameInput);
+// FUNCTION CALLS
+
+  // move Shirt Color Option Elements to and store in optgroup html nodes
+    getOptElements();
+
+  // display ONLY the blank option opt Group
+    $colorOptions.append(blankOptGrp.children);
+
+  // set focus on first element field
+    focusOnFirstField($nameInput);
 
 
 });
