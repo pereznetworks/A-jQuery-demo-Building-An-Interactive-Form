@@ -113,6 +113,9 @@ button:hover {
 	background: #184c62;
 }
 
+#color {
+  text-transform:capitalize;
+}
 /* =================================
   Page Styles
 ==================================== */

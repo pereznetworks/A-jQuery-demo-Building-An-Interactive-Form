@@ -21,16 +21,21 @@ $(document).ready(function() {
   blankOptGrp.id = "blank";
   const blankOption = document.createElement('option');
   blankOption.value = " ";
-  blankOption.textContent = " ";
+  blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
   // move shirt options under respective opt groups
   $('#color').children().each(function(i){
+
         if ($(this)[0].textContent.includes('JS Puns')) {
+          let optionValue = $(this)[0].value;
+          $(this)[0].textContent = optionValue;
           jsPunsOptGrp.append($(this)[0]);
           // $(this).remove('*');
         }
         if ($(this)[0].textContent.includes('JS shirt only')){
+          let optionValue = $(this)[0].value;
+          $(this)[0].textContent = optionValue;
           jsShirtOnlyOptGrp.append($(this)[0]);
           // $(this).remove('*');
         }
