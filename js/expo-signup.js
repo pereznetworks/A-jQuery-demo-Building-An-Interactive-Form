@@ -60,11 +60,13 @@ $(document).ready(function() {
   // triggered by change on design <select> element
   const displayColorOptGroups = function($node, shirtThemeOption){
 
+    // getting shirt theme that was selected
     let optFlag = "";
     if (shirtThemeOption){
       optFlag = shirtThemeOption;
     }
 
+    // making sure shirt color options are stored in matching optgroup
     if ( $('#color option')[0].value === 'notheme' ){
       $('#color').children().each(function(){
         blankOptGrp.append($(this)[0]);
@@ -79,9 +81,9 @@ $(document).ready(function() {
       });
     }
 
+    // read shirt color options from matching optgroup
     if (optFlag === 'js puns'){
           $node.append(jsPunsOptGrp.children);
-
     } else if (optFlag === 'heart js'){
           $node.append(jsShirtOnlyOptGrp.children);
     }
