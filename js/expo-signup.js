@@ -26,6 +26,12 @@ $(document).ready(function() {
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
+  // total amt of activities signing up for 
+  let totalAmt = 0;
+  // build a legend element to display total
+  const total = document.createElement('legend');
+  total.id = "total";
+
 // FUNCTIONS -----------------------------------
 
   // move shirt options under respective opt groups
@@ -92,6 +98,11 @@ $(document).ready(function() {
 
   }; // end addColorOptGroups function
 
+  const displayTotal = function(totalAmt){
+    total.textContent = `Total: $${totalAmt}`;
+    $('.activities').append(total);
+  }
+
 // EVENT LISTENERS ----------------------------
 
   // event listener for
@@ -121,6 +132,22 @@ $(document).ready(function() {
     });
 
   }) // end shirt design addEventListener
+
+  // eventlistener for
+    // activity labels
+      //when an activity is selected, capture, filter out price
+        // and add, display total
+  $('input[type=checkbox]').focusin(function(){
+
+    const dollarAmtFilter = /\$\d+/;
+    let activity = $(this)[0].parentNode.textContent;
+    let dollarAmtString = activity.match(dollarAmtFilter);
+    let amtString = dollarAmtString[0].slice(1);
+    let dollarAmt = parseInt(amtString);
+    totalAmt += dollarAmt;
+    displayTotal(totalAmt);
+
+  });
 
 // FUNCTION CALLS
 

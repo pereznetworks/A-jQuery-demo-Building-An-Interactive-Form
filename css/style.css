@@ -116,6 +116,13 @@ button:hover {
 #color {
   text-transform:capitalize;
 }
+
+#total {
+  font-weight: 500;
+  padding-top: 0em;
+  margin-bottom: 0em;
+  border:none;
+}
 /* =================================
   Page Styles
 ==================================== */
