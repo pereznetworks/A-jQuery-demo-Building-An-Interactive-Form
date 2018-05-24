@@ -86,6 +86,8 @@ $(document).ready(function() {
           $node.append(jsPunsOptGrp.children);
     } else if (optFlag === 'heart js'){
           $node.append(jsShirtOnlyOptGrp.children);
+    } else if (optFlag === 'notheme'){
+          $node.append(blankOptGrp.children);
     }
 
   }; // end addColorOptGroups function
@@ -107,13 +109,15 @@ $(document).ready(function() {
   $('#design').change(function() {
 
     $('#design option:selected').each(function(){
+
       if ($(this).val() === 'heart js') {
         displayColorOptGroups( $colorOptions, $(this).val() );
-      }  // end if ('heart js')
-
-      if ($(this).val() === 'js puns') {
+      }  else if ($(this).val() === 'js puns') {
         displayColorOptGroups( $colorOptions, $(this).val() );
+      }  else {
+        displayColorOptGroups( $colorOptions, 'notheme' );
       }  // end if ('js puns')
+
     });
 
   }) // end shirt design addEventListener
