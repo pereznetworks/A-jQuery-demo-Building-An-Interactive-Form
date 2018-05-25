@@ -26,7 +26,11 @@ $(document).ready(function() {
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
-  // total amt of activities signing up for 
+  // tracking selected activiies
+  let selection = 'no selected activities';
+  const selectedActivities = [];
+  selectedActivities.push(selection);
+  // total amt of activities signing up for
   let totalAmt = 0;
   // build a legend element to display total
   const total = document.createElement('legend');
@@ -103,6 +107,7 @@ $(document).ready(function() {
     $('.activities').append(total);
   }
 
+
 // EVENT LISTENERS ----------------------------
 
   // event listener for
@@ -137,17 +142,48 @@ $(document).ready(function() {
     // activity labels
       //when an activity is selected, capture, filter out price
         // and add, display total
-  $('input[type=checkbox]').focusin(function(){
+          // ('input[type=checkbox]')
+  $('.activities input').click(function(){
 
+    // capture textContent of selected activities label element
+     selection = $(this)[0].parentNode.textContent;
+
+    // get dollarAmt of activity from activity description
     const dollarAmtFilter = /\$\d+/;
-    let activity = $(this)[0].parentNode.textContent;
-    let dollarAmtString = activity.match(dollarAmtFilter);
+    let dollarAmtString = selection.match(dollarAmtFilter);
     let amtString = dollarAmtString[0].slice(1);
     let dollarAmt = parseInt(amtString);
-    totalAmt += dollarAmt;
-    displayTotal(totalAmt);
+    let duplicate = false;
+    let dupItemIndex = 0;
 
-  });
+    // simply keeping running total, based on selection
+    // add and subtract as needed
+
+    // test if duplicate,
+    selectedActivities.forEach(function(item, index){
+
+      if (selection === item) { // if duplicate, then..
+        duplicate = true;
+        dupItemIndex = index;
+      }
+
+    });
+
+    if (duplicate){ // if selection matches any selectedActivities items
+        // subtract cost of activity from total
+          totalAmt -= dollarAmt;
+          displayTotal(totalAmt);
+        // remove item from array
+          selectedActivities.splice(dupItemIndex);
+      } else {
+      // add activity to array
+        selectedActivities.push(selection);
+      // add cost of activity to total
+        totalAmt += dollarAmt;
+        displayTotal(totalAmt);
+      }
+
+  }); // end activities label input eventlistener
 
 // FUNCTION CALLS
 
@@ -162,3 +198,16 @@ $(document).ready(function() {
 
 
 });
+
+// TODO: TRACK and dsiable the activities whose schedule conflict,
+
+// TODO: create JSON of entire expo sign up form
+  // running totals as needed using objectarray
+  // add object,
+    // array with key/values:
+      // num of activities
+      // and total
+  // add object,
+      // array with key/values pair for each selected Activity
+      // activity description
+      // activity cost
