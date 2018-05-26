@@ -2,17 +2,17 @@ $(document).ready(function() {
 
 // CONSTANT VALUES ------------------------------
 
+  // select input field, #name
+  const $nameInput = $('#name');
+
+  // select shirt color options, #color
+  const $colorOptions = $('#color');
+
   // build other Job Role input field
   const otherJobRoleInput = document.createElement("input");
   otherJobRoleInput.type = "text";
   otherJobRoleInput.id = "other-title";
   otherJobRoleInput.placeholder = "Your Job Role";
-
-  // select options, #color
-  const $colorOptions = $('#color');
-
-  // first input field, #name
-  const $nameInput = $('#name');
 
   // build shirt color opt groups
   const jsPunsOptGrp = document.createElement('optgroup');
@@ -26,7 +26,7 @@ $(document).ready(function() {
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
-  // tracking selected activiies
+  // used to tracking selected activiies
   let selection = 'no selected activities';
   const selectedActivities = [];
   selectedActivities.push(selection);
@@ -38,7 +38,12 @@ $(document).ready(function() {
 
 // FUNCTIONS -----------------------------------
 
-  // move shirt options under respective opt groups
+  // function to put focus on the first form field, name, input field
+  const focusOnFirstField = function($node) {
+    $node.focus();
+  }; // end focusOnFirstField function
+
+  // function to move shirt colro options under 2 opt groups
   const getOptElements = function(){
     $('#color').children().each(function(i){
 
@@ -60,11 +65,6 @@ $(document).ready(function() {
 
   };
 
-  // function to put focus on the first form field, name, input field
-  const focusOnFirstField = function($node) {
-    $node.focus();
-  }; // end focusOnFirstField function
-
   // function to add shirt color optGroups to #color <select> element
   // if matching shirt theme is selected
   // triggered by change on design <select> element
@@ -76,7 +76,8 @@ $(document).ready(function() {
       optFlag = shirtThemeOption;
     }
 
-    // making sure shirt color options are stored in matching optgroup
+    // before displaying colors that match selected design theme
+      // making sure shirt current displayed color options are stored in matching optgroups
     if ( $('#color option')[0].value === 'notheme' ){
       $('#color').children().each(function(){
         blankOptGrp.append($(this)[0]);
@@ -92,6 +93,7 @@ $(document).ready(function() {
     }
 
     // read shirt color options from matching optgroup
+      // display color options as child element of #color element
     if (optFlag === 'js puns'){
           $node.append(jsPunsOptGrp.children);
     } else if (optFlag === 'heart js'){
@@ -102,30 +104,26 @@ $(document).ready(function() {
 
   }; // end addColorOptGroups function
 
+  // simple function to display total cost of activites
   const displayTotal = function(totalAmt){
     total.textContent = `Total: $${totalAmt}`;
     $('.activities').append(total);
-  }
-
+  } // end displayTotal() function
 
 // EVENT LISTENERS ----------------------------
 
-  // event listener for
-    // if Job Title changed to 'other' display other Job Role input field
+  // event listener for other job title
+    // if job title changed to 'other' display other Job Role input field
   $('#title').change(function() {
-
     if ($(this).val() === 'other') {
       document.getElementById('title').parentNode.append(otherJobRoleInput);
     }
-
   });  // end job title addEventListener
 
-  // event listener for
+  // event listener for shirt design
     // displaying only shirt colors that go with Shirt design theme
   $('#design').change(function() {
-
     $('#design option:selected').each(function(){
-
       if ($(this).val() === 'heart js') {
         displayColorOptGroups( $colorOptions, $(this).val() );
       }  else if ($(this).val() === 'js puns') {
@@ -133,16 +131,14 @@ $(document).ready(function() {
       }  else {
         displayColorOptGroups( $colorOptions, 'notheme' );
       }  // end if ('js puns')
-
-    });
-
+    }); // end #design options
   }) // end shirt design addEventListener
 
   // eventlistener for
     // activity labels
-      //when an activity is selected, capture, filter out price
-        // and add, display total
-          // ('input[type=checkbox]')
+      //when an activity is selected, capture, filter out dollarAmt
+        // and keep running total; add, subtract and display updated total as needed
+          // ... more to do
   $('.activities input').click(function(){
 
     // capture textContent of selected activities label element
@@ -187,7 +183,7 @@ $(document).ready(function() {
 
 // FUNCTION CALLS
 
-  // move Shirt Color Option Elements to and store in optgroup html nodes
+  // move Shirt Color Option Elements to shirt color optgroups
     getOptElements();
 
   // display ONLY the blank option opt Group
