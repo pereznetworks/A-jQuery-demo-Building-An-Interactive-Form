@@ -123,6 +123,11 @@ button:hover {
   margin-bottom: 0em;
   border:none;
 }
+
+label[disabled="true"] {
+  color: grey;
+  background-color: grey;
+}
 /* =================================
   Page Styles
 ==================================== */

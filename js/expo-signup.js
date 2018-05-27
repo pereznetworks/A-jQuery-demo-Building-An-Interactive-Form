@@ -142,7 +142,7 @@ $(document).ready(function() {
   $('.activities input').click(function(){
 
     // capture textContent of selected activities label element
-     selection = $(this)[0].parentNode.textContent;
+    selection = $(this)[0].parentNode.textContent;
 
     // get dollarAmt of activity from activity description
     const dollarAmtFilter = /\$\d+/;
@@ -155,27 +155,27 @@ $(document).ready(function() {
     // simply keeping running total, based on selection
     // add and subtract as needed
 
-    // test if duplicate,
+    // test if duplicate, (means already selected once, so being deselected)
     selectedActivities.forEach(function(item, index){
-
       if (selection === item) { // if duplicate, then..
-        duplicate = true;
-        dupItemIndex = index;
+        duplicate = true;       // set duplicate bolean to true
+        dupItemIndex = index;   // save index of duplicate item
       }
-
     });
 
-    if (duplicate){ // if selection matches any selectedActivities items
+    if (duplicate){ // if item being de-selected
         // subtract cost of activity from total
           totalAmt -= dollarAmt;
+        // display updated total
           displayTotal(totalAmt);
         // remove item from array
           selectedActivities.splice(dupItemIndex);
-      } else {
+      } else {  // else item is being selected
       // add activity to array
         selectedActivities.push(selection);
       // add cost of activity to total
         totalAmt += dollarAmt;
+      // display updated total
         displayTotal(totalAmt);
       }
 
@@ -191,7 +191,6 @@ $(document).ready(function() {
 
   // set focus on first element field
     focusOnFirstField($nameInput);
-
 
 });
 
