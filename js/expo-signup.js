@@ -26,10 +26,10 @@ $(document).ready(function() {
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
-  // used to tracking selected activiies
-  let selection = 'no selected activities';
+  // used to track selected activiies, setting initial values
+  let selection = {};
+  selection.activity = 'no selected activity';
   const selectedActivities = [];
-  selectedActivities.push(selection);
   // total amt of activities signing up for
   let totalAmt = 0;
   // build a legend element to display total
@@ -141,27 +141,38 @@ $(document).ready(function() {
           // ... more to do
   $('.activities input').click(function(){
 
-    // capture textContent of selected activities label element
-    selection = $(this)[0].parentNode.textContent;
-
-    // get dollarAmt of activity from activity description
-    const dollarAmtFilter = /\$\d+/;
-    let dollarAmtString = selection.match(dollarAmtFilter);
-    let amtString = dollarAmtString[0].slice(1);
-    let dollarAmt = parseInt(amtString);
+    // const values used to test if duplicate selected , (means already selected once, so deselected)
     let duplicate = false;
     let dupItemIndex = 0;
 
-    // simply keeping running total, based on selection
-    // add and subtract as needed
+    // capture textContent of selected activities label element
+    selection.activity = $(this)[0].parentNode.textContent;
 
-    // test if duplicate, (means already selected once, so being deselected)
+    // get dollarAmt of activity from activity description
+    const dollarAmtFilter = /\$\d+/;
+    let dollarAmtString = selection.activity.match(dollarAmtFilter);
+    let amtString = dollarAmtString[0].slice(1);
+    let dollarAmt = parseInt(amtString);
+    selection.cost = dollarAmt;
+
+    // get day of week for activity selected
+    const dayofWeekFilter = /day\B/;
+    let dayString = selection.activity.match(dayofWeekFilter);
+    selection.day = dayString;
+    // get time period for activity selected
+    const timeOfDayFilter = /m\B/;
+    let timeOfDayString = selection.activity.match(timeOfDayFilter);
+    selection.time = timeOfDayString;
+
     selectedActivities.forEach(function(item, index){
-      if (selection === item) { // if duplicate, then..
+      if (selection.activity === item.activity) { // if duplicate, then..
         duplicate = true;       // set duplicate bolean to true
         dupItemIndex = index;   // save index of duplicate item
       }
     });
+
+    // keep running total, based on selection
+    // add and subtract as needed
 
     if (duplicate){ // if item being de-selected
         // subtract cost of activity from total
