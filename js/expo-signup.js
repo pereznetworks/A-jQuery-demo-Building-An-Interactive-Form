@@ -143,13 +143,13 @@ $(document).ready(function() {
           // ... more to do
 document.querySelectorAll('.activities input').forEach(function(item, index){
 
-  item.addEventListener('click', function(e){
+  item.addEventListener('click', function(e){  // each activity label/input gets it's own event listener
 
       // const values used to test if duplicate selected , (means already selected once, so deselected)
       let duplicate = false;
       let dupItemIndex = 0;
 
-      // used to capture textContent of selected activities label element
+      // object used to capture textContent of selected activities label element
       let selection = {};
 
       // get dollarAmt of activity from activity description
