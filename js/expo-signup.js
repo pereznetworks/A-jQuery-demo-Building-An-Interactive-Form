@@ -28,9 +28,6 @@ $(document).ready(function() {
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
-  // used to track selected activiies
-  let selection = {};
-
   // total amt of activities signing up for
   let totalAmt = 0;
   // build a legend element to display total
@@ -135,12 +132,14 @@ $(document).ready(function() {
     }); // end #design options
   }) // end shirt design addEventListener
 
-  // eventlistener for
-    // activity labels
+  // eventlistener for activity labels
       //when an activity is selected, capture, filter out dollarAmt
         // and keep running total; add, subtract and display updated total as needed
           // ... more to do
 document.querySelectorAll('.activities input').forEach(function(item, index){
+
+  // used to track selected activiies
+  const selection = {};
 
   item.addEventListener('click', function(e){  // each activity label/input gets it's own event listener
 
@@ -190,12 +189,7 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
             totalAmt -= dollarAmt;
           // display updated total
             displayTotal(totalAmt);
-          // reset selection object
-            selection.day = '';
-            selection.time = '';
-            selection.cost = 0;
-            selection.activity = '';
-          // remove item from array
+
             selectedActivities.splice(dupItemIndex, 1);
 
         } else {  // else item is being selected
@@ -235,10 +229,12 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
                 if (selection.time === this.textContent.match(timeOfDayFilter)[0] ){
                   $('.activities label')[index].setAttribute('style', 'color:grey;background-color:silver;');
                   $('.activities input')[index].disabled = true;
-                } else {
-                  $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
-                  $('.activities input')[index].disabled = false;
                 }
+
+                // else {
+                //   $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
+                //   $('.activities input')[index].disabled = false;
+                // }
               }
             }
           });
