@@ -1,8 +1,10 @@
-const selectedActivities = [];
+
 
 $(document).ready(function() {
 
 // CONSTANT VALUES ------------------------------
+
+const selectedActivities = [];
 
   // select input field, #name
   const $nameInput = $('#name');
