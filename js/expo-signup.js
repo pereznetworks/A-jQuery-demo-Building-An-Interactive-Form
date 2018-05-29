@@ -138,7 +138,7 @@ $(document).ready(function() {
           // ... more to do
 document.querySelectorAll('.activities input').forEach(function(item, index){
 
-  // used to track selected activiies
+  // used to track selected activiies, scoped to function for each activities label input
   const selection = {};
 
   item.addEventListener('click', function(e){  // each activity label/input gets it's own event listener
