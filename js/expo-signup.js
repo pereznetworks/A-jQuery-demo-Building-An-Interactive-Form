@@ -28,9 +28,8 @@ $(document).ready(function() {
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
-  // used to track selected activiies, setting initial values
-
-  //selection.activity = 'no selected activity';
+  // used to track selected activiies
+  let selection = {};
 
   // total amt of activities signing up for
   let totalAmt = 0;
@@ -145,16 +144,19 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
 
   item.addEventListener('click', function(e){  // each activity label/input gets it's own event listener
 
-      // for matching and parsing dollar amt from activity description string 
+      // for matching and parsing dollar amt from activity description string
       let amtString = '';
       let dollarAmt = 0;
 
-      // const values used to test if duplicate selected , (means already selected once, so deselected)
+      // for matching and parsing time of day and day of week
+      let timeOfDayString = '';
+      const timeOfDayFilter = /\d\w*-\w*/;
+      let dayString = '';
+      const dayofWeekFilter = /\w*day\b/;
+
+      // const var used to test if duplicate selected , (means already selected once, so deselected)
       let duplicate = false;
       let dupItemIndex = 0;
-
-      // object used to capture textContent of selected activities label element
-      let selection = {};
 
       // get dollarAmt of activity from activity description
             // match part of string starting with '$' followed by numbers
@@ -175,28 +177,41 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
       });
 
       if (duplicate){ // if item being de-selected
+        // re-enable activity that was de-selected
+        $('.activities label').each(function(index, item){
+            if (index !== 0 && selection.day === this.textContent.match(dayofWeekFilter)[0] ){
+              if (selection.time === this.textContent.match(timeOfDayFilter)[0] ){
+                $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
+                $('.activities input')[index].disabled = false;
+              }
+            }
+        });
           // subtract cost of activity from total
             totalAmt -= dollarAmt;
           // display updated total
             displayTotal(totalAmt);
+          // reset selection object
+            selection.day = '';
+            selection.time = '';
+            selection.cost = 0;
+            selection.activity = '';
           // remove item from array
             selectedActivities.splice(dupItemIndex, 1);
+
         } else {  // else item is being selected
 
         // get day of week for activity selected
-              // match part of string ending in day and a word boundary
-        const dayofWeekFilter = /\w*day\b/;
-        // assing to array selection, key value of day
-        let dayString = e.target.parentNode.textContent.match(dayofWeekFilter);
+          // match part of string ending in day and a word boundary
+            // assing to array selection, key value of day
+        dayString = e.target.parentNode.textContent.match(dayofWeekFilter);
           if (dayString){
             selection.day = dayString[0];
           }
 
         // get time period for activity selected
-              // match part of string that begins with a number 0-9, all alphanumerical a dash then alphanumerical up to word boundary
-        const timeOfDayFilter = /\d\w*-\w*/;
-        // assing to array selection, key value of time
-        let timeOfDayString = e.target.parentNode.textContent.match(timeOfDayFilter);
+            // match part of string that begins with a number 0-9, all alphanumerical a dash then alphanumerical up to word boundary
+              // assing to array selection, key value of time
+        timeOfDayString = e.target.parentNode.textContent.match(timeOfDayFilter);
           if (timeOfDayString) {
             selection.time = timeOfDayString[0];
           }
@@ -211,6 +226,22 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
           totalAmt += dollarAmt;
         // display updated total
           displayTotal(totalAmt);
+
+          // disable activites that conflict with current selected activity
+          // make sure to enable any that no longer conflict
+          $('.activities label').each(function(index, item){
+            if (index !== 0 && selection.activity !== this.textContent ) {
+              if (selection.day === this.textContent.match(dayofWeekFilter)[0] ){
+                if (selection.time === this.textContent.match(timeOfDayFilter)[0] ){
+                  $('.activities label')[index].setAttribute('style', 'color:grey;background-color:silver;');
+                  $('.activities input')[index].disabled = true;
+                } else {
+                  $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
+                  $('.activities input')[index].disabled = false;
+                }
+              }
+            }
+          });
         }
 
     }); // end activities label input eventlistener
