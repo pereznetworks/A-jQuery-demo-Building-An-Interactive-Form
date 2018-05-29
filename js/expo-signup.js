@@ -145,6 +145,10 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
 
   item.addEventListener('click', function(e){  // each activity label/input gets it's own event listener
 
+      // for matching and parsing dollar amt from activity description string 
+      let amtString = '';
+      let dollarAmt = 0;
+
       // const values used to test if duplicate selected , (means already selected once, so deselected)
       let duplicate = false;
       let dupItemIndex = 0;
@@ -153,20 +157,15 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
       let selection = {};
 
       // get dollarAmt of activity from activity description
+            // match part of string starting with '$' followed by numbers
       const dollarAmtFilter = /\$\d+/;
       let dollarAmtString = e.target.parentNode.textContent.match(dollarAmtFilter);
-      let amtString = dollarAmtString[0].slice(1);
-      let dollarAmt = parseInt(amtString);
-      selection.cost = dollarAmt;
-
-      // get day of week for activity selected
-      const dayofWeekFilter = /day\B/;
-      let dayString = e.target.parentNode.textContent.match(dayofWeekFilter);
-      selection.day = dayString;
-      // get time period for activity selected
-      const timeOfDayFilter = /m\B/;
-      let timeOfDayString = e.target.parentNode.textContent.match(timeOfDayFilter);
-      selection.time = timeOfDayString;
+      // assign to selection array, key value of cost
+        if (dollarAmtString) {
+          amtString = dollarAmtString[0].slice(1);
+          dollarAmt = parseInt(amtString);
+          selection.cost = dollarAmt;
+        }
 
       selectedActivities.forEach(function(item, index){
         if (e.target.parentNode.textContent === item.activity) { // if duplicate, then..
@@ -174,9 +173,6 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
           dupItemIndex = index;   // save index of duplicate item
         }
       });
-
-      // keep running total, based on selection
-      // add and subtract as needed
 
       if (duplicate){ // if item being de-selected
           // subtract cost of activity from total
@@ -186,9 +182,31 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
           // remove item from array
             selectedActivities.splice(dupItemIndex, 1);
         } else {  // else item is being selected
-        // add activity to array
+
+        // get day of week for activity selected
+              // match part of string ending in day and a word boundary
+        const dayofWeekFilter = /\w*day\b/;
+        // assing to array selection, key value of day
+        let dayString = e.target.parentNode.textContent.match(dayofWeekFilter);
+          if (dayString){
+            selection.day = dayString[0];
+          }
+
+        // get time period for activity selected
+              // match part of string that begins with a number 0-9, all alphanumerical a dash then alphanumerical up to word boundary
+        const timeOfDayFilter = /\d\w*-\w*/;
+        // assing to array selection, key value of time
+        let timeOfDayString = e.target.parentNode.textContent.match(timeOfDayFilter);
+          if (timeOfDayString) {
+            selection.time = timeOfDayString[0];
+          }
+
+        // add activity description to selection array
           selection.activity = e.target.parentNode.textContent;
+
+        // add activity to array
           selectedActivities.push(selection);
+
         // add cost of activity to total
           totalAmt += dollarAmt;
         // display updated total
