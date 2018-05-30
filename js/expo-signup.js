@@ -2,9 +2,13 @@
 
 $(document).ready(function() {
 
-// CONSTANT VALUES ------------------------------
+// CONSTANT variables ------------------------------
 
-const selectedActivities = [];
+  // array for tracking input for all signup form fields
+  const signUpRegistration = [];
+
+  // array for selected activities object
+  const selectedActivities = [];
 
   // select input field, #name
   const $nameInput = $('#name');
@@ -36,7 +40,7 @@ const selectedActivities = [];
   const total = document.createElement('legend');
   total.id = "total";
 
-// FUNCTIONS -----------------------------------
+// FUNCTIONS declarations-----------------------------------
 
   // function to put focus on the first form field, name, input field
   const focusOnFirstField = function($node) {
@@ -112,17 +116,38 @@ const selectedActivities = [];
 
 // EVENT LISTENERS ----------------------------
 
-  // event listener for other job title
+  // event listener for name field input
+    $('#name').change(function(){
+      signUpRegistration.name = document.getElementById('name').value;
+    });
+
+  // event listener for email field input
+    $('#mail').change(function(){
+      signUpRegistration.mail = document.getElementById('mail').value;
+    });
+
+  // event listener for job title select value change
     // if job title changed to 'other' display other Job Role input field
-  $('#title').change(function() {
+    $('#title').change(function() {
     if ($(this).val() === 'other') {
       document.getElementById('title').parentNode.append(otherJobRoleInput);
+
+      // event listener for other-title field input
+        // captures as text input to field changes
+        $('#other-title').change(function(){
+        signUpRegistration.title = document.getElementById('other-title').value;
+      });
+
+    } else {
+      signUpRegistration.title = document.getElementById('title').val();
     }
   });  // end job title addEventListener
 
-  // event listener for shirt design
+
+
+  // event listener for change in shirt design value
     // displaying only shirt colors that go with Shirt design theme
-  $('#design').change(function() {
+    $('#design').change(function() {
     $('#design option:selected').each(function(){
       if ($(this).val() === 'heart js') {
         displayColorOptGroups( $colorOptions, $(this).val() );
@@ -134,118 +159,130 @@ const selectedActivities = [];
     }); // end #design options
   }) // end shirt design addEventListener
 
-  // eventlistener for activity labels
-      //when an activity is selected, capture, filter out dollarAmt
-        // and keep running total; add, subtract and display updated total as needed
-          // ... more to do
-document.querySelectorAll('.activities input').forEach(function(item, index){
+  // event listener for shirt color value
+    // capture shirt size, design and color
+    $('#color').change(function(){
+    signUpRegistration.shirtSize = document.getElementById('size').value;
+    signUpRegistration.shirtDesign = document.getElementById('design').value;
+    signUpRegistration.shirtColor = document.getElementById('color').value;
+  });
 
-  // used to track selected activiies, scoped to function for each activities label input
-  const selection = {};
+  // forEach activity label function
+    // set up eventlistener for each activity input
+      // when an activity input is selected, capture, filter out activity details
+  document.querySelectorAll('.activities input').forEach(function(item, index){
 
-  item.addEventListener('click', function(e){  // each activity label/input gets it's own event listener
+      // used to track selected activiies,
+        // scoped to activities label input function
+      const selection = {};
 
-      // for matching and parsing dollar amt from activity description string
-      let amtString = '';
-      let dollarAmt = 0;
+      item.addEventListener('click', function(e){
+        // each activity label/input gets it's own event listener
 
-      // for matching and parsing time of day and day of week
-      let timeOfDayString = '';
-      const timeOfDayFilter = /\d\w*-\w*/;
-      let dayString = '';
-      const dayofWeekFilter = /\w*day\b/;
+          // for matching and parsing dollar amt from activity description string
+          let amtString = '';
+          let dollarAmt = 0;
 
-      // const var used to test if duplicate selected , (means already selected once, so deselected)
-      let duplicate = false;
-      let dupItemIndex = 0;
+          // for matching and parsing time of day and day of week
+          let timeOfDayString = '';
+          const timeOfDayFilter = /\d\w*-\w*/;
+          let dayString = '';
+          const dayofWeekFilter = /\w*day\b/;
 
-      // get dollarAmt of activity from activity description
-            // match part of string starting with '$' followed by numbers
-      const dollarAmtFilter = /\$\d+/;
-      let dollarAmtString = e.target.parentNode.textContent.match(dollarAmtFilter);
-      // assign to selection array, key value of cost
-        if (dollarAmtString) {
-          amtString = dollarAmtString[0].slice(1);
-          dollarAmt = parseInt(amtString);
-          selection.cost = dollarAmt;
-        }
+          // const var used to test if duplicate selected , (means already selected once, so deselected)
+          let duplicate = false;
+          let dupItemIndex = 0;
 
-      selectedActivities.forEach(function(item, index){
-        if (e.target.parentNode.textContent === item.activity) { // if duplicate, then..
-          duplicate = true;       // set duplicate bolean to true
-          dupItemIndex = index;   // save index of duplicate item
-        }
-      });
-
-      if (duplicate){ // if item being de-selected
-        // re-enable activity that was de-selected
-        $('.activities label').each(function(index, item){
-            if (index !== 0 && selection.day === this.textContent.match(dayofWeekFilter)[0] ){
-              if (selection.time === this.textContent.match(timeOfDayFilter)[0] ){
-                $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
-                $('.activities input')[index].disabled = false;
-              }
+          // get dollarAmt of activity from activity description
+                // match part of string starting with '$' followed by numbers
+          const dollarAmtFilter = /\$\d+/;
+          let dollarAmtString = e.target.parentNode.textContent.match(dollarAmtFilter);
+          // assign to selection array, key value of cost
+            if (dollarAmtString) {
+              amtString = dollarAmtString[0].slice(1);
+              dollarAmt = parseInt(amtString);
+              selection.cost = dollarAmt;
             }
-        });
-          // subtract cost of activity from total
-            totalAmt -= dollarAmt;
-          // display updated total
-            displayTotal(totalAmt);
 
-            selectedActivities.splice(dupItemIndex, 1);
-
-        } else {  // else item is being selected
-
-        // get day of week for activity selected
-          // match part of string ending in day and a word boundary
-            // assing to array selection, key value of day
-        dayString = e.target.parentNode.textContent.match(dayofWeekFilter);
-          if (dayString){
-            selection.day = dayString[0];
-          }
-
-        // get time period for activity selected
-            // match part of string that begins with a number 0-9, all alphanumerical a dash then alphanumerical up to word boundary
-              // assing to array selection, key value of time
-        timeOfDayString = e.target.parentNode.textContent.match(timeOfDayFilter);
-          if (timeOfDayString) {
-            selection.time = timeOfDayString[0];
-          }
-
-        // add activity description to selection array
-          selection.activity = e.target.parentNode.textContent;
-
-        // add activity to array
-          selectedActivities.push(selection);
-
-        // add cost of activity to total
-          totalAmt += dollarAmt;
-        // display updated total
-          displayTotal(totalAmt);
-
-          // disable activites that conflict with current selected activity
-          // make sure to enable any that no longer conflict
-          $('.activities label').each(function(index, item){
-            if (index !== 0 && selection.activity !== this.textContent ) {
-              if (selection.day === this.textContent.match(dayofWeekFilter)[0] ){
-                if (selection.time === this.textContent.match(timeOfDayFilter)[0] ){
-                  $('.activities label')[index].setAttribute('style', 'color:grey;background-color:silver;');
-                  $('.activities input')[index].disabled = true;
-                }
-
-                // else {
-                //   $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
-                //   $('.activities input')[index].disabled = false;
-                // }
-              }
+          selectedActivities.forEach(function(item, index){
+            if (e.target.parentNode.textContent === item.activity) { // if duplicate, then..
+              duplicate = true;       // set duplicate bolean to true
+              dupItemIndex = index;   // save index of duplicate item
             }
           });
-        }
 
-    }); // end activities label input eventlistener
-});
+          if (duplicate){ // if item being de-selected
+            // re-enable activity that was de-selected
+            $('.activities label').each(function(index, item){
+                if (index !== 0 && selection.day === this.textContent.match(dayofWeekFilter)[0] ){
+                  if (selection.time === this.textContent.match(timeOfDayFilter)[0] ){
+                    $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
+                    $('.activities input')[index].disabled = false;
+                  }
+                }
+            });
+              // subtract cost of activity from total
+                totalAmt -= dollarAmt;
+              // display updated total
+                displayTotal(totalAmt);
+
+                selectedActivities.splice(dupItemIndex, 1);
+
+            } else {  // else item is being selected
+
+              // get day of week for activity selected
+              // match part of string ending in day and a word boundary
+                // assing to array selection, key value of day
+                dayString = e.target.parentNode.textContent.match(dayofWeekFilter);
+              if (dayString){
+                selection.day = dayString[0];
+              }
+
+              // get time period for activity selected
+                // match part of string that begins with a number 0-9, all alphanumerical a dash then alphanumerical up to word boundary
+                  // assing to array selection, key value of time
+                timeOfDayString = e.target.parentNode.textContent.match(timeOfDayFilter);
+              if (timeOfDayString) {
+                selection.time = timeOfDayString[0];
+              }
+
+              // add activity description to selection array
+                selection.activity = e.target.parentNode.textContent;
+
+              // add activity to array
+                selectedActivities.push(selection);
+
+              // add cost of activity to total
+                totalAmt += dollarAmt;
+              // display updated total
+                displayTotal(totalAmt);
+
+              // disable activites that conflict with current selected activity
+              // make sure to enable any that no longer conflict
+              $('.activities label').each(function(index, item){
+                if (index !== 0 && selection.activity !== this.textContent ) {
+                  if (selection.day === this.textContent.match(dayofWeekFilter)[0] ){
+                    if (selection.time === this.textContent.match(timeOfDayFilter)[0] ){
+                      $('.activities label')[index].setAttribute('style', 'color:grey;background-color:silver;');
+                      $('.activities input')[index].disabled = true;
+                    }
+
+                    // else {
+                    //   $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
+                    //   $('.activities input')[index].disabled = false;
+                    // }
+                  }
+                }
+              });
+
+            }
+
+          signUpRegistration.activiies = selectedActivities;
+
+      }); // end activities input eventlistener
 
 
+    }); // end activiies label for each function
 
 // FUNCTION CALLS
 
@@ -259,16 +296,3 @@ document.querySelectorAll('.activities input').forEach(function(item, index){
     focusOnFirstField($nameInput);
 
 });
-
-// TODO: TRACK and dsiable the activities whose schedule conflict,
-
-// TODO: create JSON of entire expo sign up form
-  // running totals as needed using objectarray
-  // add object,
-    // array with key/values:
-      // num of activities
-      // and total
-  // add object,
-      // array with key/values pair for each selected Activity
-      // activity description
-      // activity cost
