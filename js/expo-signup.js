@@ -34,6 +34,10 @@ $(document).ready(function() {
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
+  // const vars for payment option html nodes
+  const paymentFieldset = document.getElementById('payment').parentNode.children;
+  const paymentOptions = document.createElement('div');
+
   // total amt of activities signing up for
   let totalAmt = 0;
   // build a legend element to display total
@@ -47,28 +51,35 @@ $(document).ready(function() {
     $node.focus();
   }; // end focusOnFirstField function
 
-  // function to move shirt colro options under 2 opt groups
+  // function to move shirt color options under 2 const html node opt groups
   const getOptElements = function(){
     $('#color').children().each(function(i){
-
-          if ($(this)[0].textContent.includes('JS Puns')) {
-            let optionValue = $(this)[0].value;
-            $(this)[0].class = 'js_puns';
-            $(this)[0].textContent = optionValue;
-            jsPunsOptGrp.append($(this)[0]);
-            // $(this).remove('*');
-          }
-          if ($(this)[0].textContent.includes('JS shirt only')){
-            let optionValue = $(this)[0].value;
-            $(this)[0].class = 'js_shirt_only';
-            $(this)[0].textContent = optionValue;
-            jsShirtOnlyOptGrp.append($(this)[0]);
-            // $(this).remove('*');
-          }
+        if ($(this)[0].textContent.includes('JS Puns')) {
+          let optionValue = $(this)[0].value;
+          $(this)[0].class = 'js_puns';
+          $(this)[0].textContent = optionValue;
+          jsPunsOptGrp.append($(this)[0]);
+        }
+        if ($(this)[0].textContent.includes('JS shirt only')){
+          let optionValue = $(this)[0].value;
+          $(this)[0].class = 'js_shirt_only';
+          $(this)[0].textContent = optionValue;
+          jsShirtOnlyOptGrp.append($(this)[0]);
+        }
       }); // end $()each
 
-  };
+  }; // end getOptElements function
 
+  // function to move each payment options elements into separate const html nodes
+  const getPayOptions = function(){
+    $('#payment').children().each(function(){
+      paymentOptions.append(paymentFieldset[5]);
+      paymentOptions.children[0].setAttribute('id', 'bitcoin')
+      paymentOptions.append(paymentFieldset[4]);
+      paymentOptions.children[1].setAttribute('id', 'paypal')
+      paymentOptions.append(paymentFieldset[3]);
+    });
+  };
   // function to add shirt color optGroups to #color <select> element
   // if matching shirt theme is selected
   // triggered by change on design <select> element
@@ -129,43 +140,39 @@ $(document).ready(function() {
   // event listener for job title select value change
     // if job title changed to 'other' display other Job Role input field
     $('#title').change(function() {
-    if ($(this).val() === 'other') {
-      document.getElementById('title').parentNode.append(otherJobRoleInput);
-
-      // event listener for other-title field input
-        // captures as text input to field changes
-        $('#other-title').change(function(){
-        signUpRegistration.title = document.getElementById('other-title').value;
-      });
-
-    } else {
-      signUpRegistration.title = document.getElementById('title').val();
-    }
-  });  // end job title addEventListener
-
-
+      if ($(this).val() === 'other') {
+        document.getElementById('title').parentNode.append(otherJobRoleInput);
+        // event listener for other-title field input
+          // captures as text input to field changes
+          $('#other-title').change(function(){
+          signUpRegistration.title = document.getElementById('other-title').value;
+        });
+      } else {
+        signUpRegistration.title = document.getElementById('title').val();
+      }
+    });  // end job title addEventListener
 
   // event listener for change in shirt design value
     // displaying only shirt colors that go with Shirt design theme
     $('#design').change(function() {
-    $('#design option:selected').each(function(){
-      if ($(this).val() === 'heart js') {
-        displayColorOptGroups( $colorOptions, $(this).val() );
-      }  else if ($(this).val() === 'js puns') {
-        displayColorOptGroups( $colorOptions, $(this).val() );
-      }  else {
-        displayColorOptGroups( $colorOptions, 'notheme' );
-      }  // end if ('js puns')
-    }); // end #design options
-  }) // end shirt design addEventListener
+      $('#design option:selected').each(function(){
+        if ($(this).val() === 'heart js') {
+          displayColorOptGroups( $colorOptions, $(this).val() );
+        } else if ($(this).val() === 'js puns') {
+          displayColorOptGroups( $colorOptions, $(this).val() );
+        } else {
+          displayColorOptGroups( $colorOptions, 'notheme' );
+        }  // end if ('js puns')
+      }); // end #design options
+    }) // end shirt design addEventListener
 
   // event listener for shirt color value
     // capture shirt size, design and color
     $('#color').change(function(){
-    signUpRegistration.shirtSize = document.getElementById('size').value;
-    signUpRegistration.shirtDesign = document.getElementById('design').value;
-    signUpRegistration.shirtColor = document.getElementById('color').value;
-  });
+      signUpRegistration.shirtSize = document.getElementById('size').value;
+      signUpRegistration.shirtDesign = document.getElementById('design').value;
+      signUpRegistration.shirtColor = document.getElementById('color').value;
+    });
 
   // forEach activity label function
     // set up eventlistener for each activity input
@@ -284,7 +291,30 @@ $(document).ready(function() {
 
     }); // end activiies label for each function
 
+  // event listener for change in shirt design value
+    // displaying only shirt colors that go with Shirt design theme
+    $('#payment').change(function() {
+
+      if ($(this).value !== "select_method"){
+        paymentOptions.append( $('#payment').parent().children()[3] );
+      }
+
+    $('#payment option:selected').each(function(){
+      if ($(this).val() === 'credit card') {
+        $('#payment').parent()[0].append(paymentOptions.children.namedItem('credit-card'));
+      } else if ($(this).val() === 'paypal') {
+        $('#payment').parent()[0].append(paymentOptions.children.namedItem('paypal'));
+      } else if ($(this).val() === 'bitcoin') {
+        $('#payment').parent()[0].append(paymentOptions.children.namedItem('bitcoin'));
+      } // end if
+    }); // end #payment options
+
+    }) // end #payment addEventListener
+
 // FUNCTION CALLS
+
+  // move payment options to paymentOptions html node
+    getPayOptions();
 
   // move Shirt Color Option Elements to shirt color optgroups
     getOptElements();
