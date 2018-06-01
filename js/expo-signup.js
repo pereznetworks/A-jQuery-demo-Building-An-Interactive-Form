@@ -70,16 +70,6 @@ $(document).ready(function() {
 
   }; // end getOptElements function
 
-  // function to move each payment options elements into separate const html nodes
-  const getPayOptions = function(){
-    $('#payment').children().each(function(){
-      paymentOptions.append(paymentFieldset[5]);
-      paymentOptions.children[0].setAttribute('id', 'bitcoin')
-      paymentOptions.append(paymentFieldset[4]);
-      paymentOptions.children[1].setAttribute('id', 'paypal')
-      paymentOptions.append(paymentFieldset[3]);
-    });
-  };
   // function to add shirt color optGroups to #color <select> element
   // if matching shirt theme is selected
   // triggered by change on design <select> element
@@ -125,6 +115,33 @@ $(document).ready(function() {
     $('.activities').append(total);
   } // end displayTotal() function
 
+  const displayPaymentOptions = function($optionValue){
+    $('#payment option:selected').each(function(){
+      if ($optionValue === 'credit card') {
+        $('#payment').parent()[0].append(paymentOptions.children.namedItem('credit-card'));
+      } else if ($optionValue === 'paypal') {
+        $('#payment').parent()[0].append(paymentOptions.children.namedItem('paypal'));
+      } else if ($optionValue === 'bitcoin') {
+        $('#payment').parent()[0].append(paymentOptions.children.namedItem('bitcoin'));
+      } // end if
+    }); // end #payment options
+  }
+
+  // function to move each payment options elements into separate const html nodes
+  const getPayOptions = function(){
+
+    $('#payment').children().each(function(){
+      paymentOptions.append(paymentFieldset[5]);
+      paymentOptions.children[0].setAttribute('id', 'bitcoin')
+      paymentOptions.append(paymentFieldset[4]);
+      paymentOptions.children[1].setAttribute('id', 'paypal')
+      paymentOptions.append(paymentFieldset[3]);
+    });
+
+    //$('#payment').parent().children().append( paymentOptions.children.namedItem('credit-card') );
+    $('#payment').parent().children()[2].value = "credit card";
+    displayPaymentOptions("credit card");
+  };
 // EVENT LISTENERS ----------------------------
 
   // event listener for name field input
@@ -272,18 +289,14 @@ $(document).ready(function() {
                     if (selection.time === this.textContent.match(timeOfDayFilter)[0] ){
                       $('.activities label')[index].setAttribute('style', 'color:grey;background-color:silver;');
                       $('.activities input')[index].disabled = true;
-                    }
+                    } // end if matches timeOfDayFilter
+                  } // end if matched dayofWeekFilter
+                } // end if selecting actvity with day and time schedule
+              }); // end activities label each loop
 
-                    // else {
-                    //   $('.activities label')[index].removeAttribute('style', 'color:grey;background-color:silver;');
-                    //   $('.activities input')[index].disabled = false;
-                    // }
-                  }
-                }
-              });
+            } // end if/else : handling deseleciton or selection of activiies
 
-            }
-
+          // read actvities selection to signUpRegistration object
           signUpRegistration.activiies = selectedActivities;
 
       }); // end activities input eventlistener
@@ -293,23 +306,15 @@ $(document).ready(function() {
 
   // event listener for change in shirt design value
     // displaying only shirt colors that go with Shirt design theme
-    $('#payment').change(function() {
+  $('#payment').change(function() {
 
-      if ($(this).value !== "select_method"){
-        paymentOptions.append( $('#payment').parent().children()[3] );
-      }
+    // move current payment method back to paymentOptions html collection node
+      paymentOptions.append( $('#payment').parent().children()[3] );
 
-    $('#payment option:selected').each(function(){
-      if ($(this).val() === 'credit card') {
-        $('#payment').parent()[0].append(paymentOptions.children.namedItem('credit-card'));
-      } else if ($(this).val() === 'paypal') {
-        $('#payment').parent()[0].append(paymentOptions.children.namedItem('paypal'));
-      } else if ($(this).val() === 'bitcoin') {
-        $('#payment').parent()[0].append(paymentOptions.children.namedItem('bitcoin'));
-      } // end if
-    }); // end #payment options
+    // move selected payment option from paymentOptions
+      displayPaymentOptions( $(this).val() );
 
-    }) // end #payment addEventListener
+  }); // end #payment addEventListener
 
 // FUNCTION CALLS
 
