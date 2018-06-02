@@ -16,6 +16,7 @@ $(document).ready(function() {
   // select shirt color options, #color
   const $colorOptions = $('#color');
 
+  let otherJobTitleSelected = false;
   // build other Job Role input field
   const otherJobRoleInput = document.createElement("input");
   otherJobRoleInput.type = "text";
@@ -157,15 +158,21 @@ $(document).ready(function() {
   // event listener for job title select value change
     // if job title changed to 'other' display other Job Role input field
     $('#title').change(function() {
-      if ($(this).val() === 'other') {
-        document.getElementById('title').parentNode.append(otherJobRoleInput);
+
+
+     if ($(this).val() === 'other') {
+          document.getElementById('title').parentNode.append(otherJobRoleInput);
+          otherJobTitleSelected = true;
         // event listener for other-title field input
           // captures as text input to field changes
           $('#other-title').change(function(){
           signUpRegistration.title = document.getElementById('other-title').value;
         });
+      } else if (otherJobTitleSelected) {
+             $('#other-title').remove('*');
+             otherJobTitleSelected = false;
       } else {
-        signUpRegistration.title = document.getElementById('title').val();
+        signUpRegistration.title = document.getElementById('title').value;
       }
     });  // end job title addEventListener
 
@@ -297,6 +304,7 @@ $(document).ready(function() {
             } // end if/else : handling deseleciton or selection of activiies
 
           // read actvities selection to signUpRegistration object
+          signUpRegistration.totalCost = totalAmt;
           signUpRegistration.activiies = selectedActivities;
 
       }); // end activities input eventlistener
@@ -329,5 +337,16 @@ $(document).ready(function() {
 
   // set focus on first element field
     focusOnFirstField($nameInput);
+
+// bind anonymous function to submit form action
+ $('form').submit(function(e){
+   console.log(signUpRegistration);
+   e.preventDefault()
+ });
+
+// triggers anonymous form submit action
+ $('button').click(function(){
+   $('form').submit();
+ });
 
 });
