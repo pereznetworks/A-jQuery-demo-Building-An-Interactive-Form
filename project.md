@@ -21,14 +21,15 @@
 	•	When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
 	•	As a user selects activities, a running total should display below the list of checkboxes. For example, if the user selects "Main Conference", then Total: $200 should appear. If they add 1 workshop, the total should change to Total: $300.
  
-# TODO : Payment Info section of the form:
+# DONE : Payment Info section of the form:
 
 	•	Display payment sections based on the payment option chosen in the select menu.
 	•	The "Credit Card" payment option should be selected by default. Display the #credit-card div, and hide the "PayPal" and "Bitcoin" information. Payment option in the select menu should match the payment option displayed on the page.
 	•	When a user selects the "PayPal" payment option, the PayPal information should display, and the credit card and “Bitcoin” information should be hidden.
 	•	When a user selects the "Bitcoin" payment option, the Bitcoin information should display, and the credit card and “PayPal” information should be hidden.
 		NOTE: The user should not be able to select the "Select Payment Method" option from the payment select menu, because the user should not be able to submit the form without a chosen payment option.  
-		# Form validation:
+
+# TODO : Form validation:
 
 	•	If any of the following validation errors exist, prevent the user from submitting the form:
 	•	Name field can't be blank.
