@@ -6,6 +6,7 @@ $(document).ready(function() {
 
   // array for tracking input for all signup form fields
   const signUpRegistration = [];
+  signUpRegistration.paymentInfo = {};
 
   // array for selected activities object
   const selectedActivities = [];
@@ -142,7 +143,96 @@ $(document).ready(function() {
     //$('#payment').parent().children().append( paymentOptions.children.namedItem('credit-card') );
     $('#payment').parent().children()[2].value = "credit card";
     displayPaymentOptions("credit card");
+    signUpRegistration.paymentInfo.type = "credit card";
   };
+
+  // function to add event listeners to capture payment info
+  const getCCPaymentInfo = function(){
+
+  // capture Credit Card payment input
+  // $('#cc-num').change(function(){
+    signUpRegistration.paymentInfo.ccNum = document.getElementById('cc-num').value;
+  // });
+
+  // capture CVV payment input
+  // $('#cvv').change(function(){
+    signUpRegistration.paymentInfo.cvv == document.getElementById('cvv').value;
+  // });
+
+  // capture Credit Card payment input
+  // $('#zip').change(function(){
+    signUpRegistration.paymentInfo.zip == document.getElementById('zip').value;
+  // });
+
+  // capture expiration month selected
+  // $('#exp-month').change(function(){
+    signUpRegistration.paymentInfo.expMonth = document.getElementById('exp-month').value;
+    //$('exp-month option:selected').value;
+  // });
+
+  // capture expiration year selected
+  // $('#exp-year').change(function(){
+    signUpRegistration.paymentInfo.expYear = document.getElementById('exp-year').value;
+    //$('exp-year option:selected').value;
+  // });
+}; // end getCCPaymentInfo function
+
+  // function to perform validation on required form fields
+  const formValidation = function(signUpRegistration){
+
+    // check for valid name input
+     // regExp for checking proper noun input
+     // const nameFilter = /[A-Z][A-Za-z' -]+/;
+      // probably will not need to check format of name input, but just in case
+        // for now, just checking that something was typed in this field
+    if (signUpRegistration.name === '') {
+      // show appropriate msg,
+      console.log("you forgot to fill in your name");
+    }
+
+    // check for valid email input
+      // regExp for checking email input
+    const emailFilter = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (!signUpRegistration.email.match(emailFilter) ){
+      // show appropriate msg,
+      console.log("we need a valid email address to verify your registration");
+    }
+
+    // check for valid shirt selection
+    if (signUpRegistration.shirtDesign === "" || signUpRegistration.shirtSize === "" || signUpRegistration.shirtColor === "") {
+      // show appropriate msg,
+      console.log("don't forget to select your shirt design, size and color");
+    }
+
+    // check for selection of activities
+    if (!signUpRegistration.activities){
+      console.log('no activities selected');
+    }
+
+    // check for valid cc payment info
+      // regExp filters for checking cc payment input
+    const atLeast13numbersFilter = /[0-9]{13}/;
+    const atLeast16numbersFilter = /[0-9]{16}/;
+    const zipCodeFilter = /[0-9]{5}/;
+    const cvvFilter = /[0-9]{3}/;
+
+    if (!signUpRegistration.paymentInfo){
+      // show appropriate msg
+      console.log("please select a payment type");
+    } else if (signUpRegistration.paymentInfo.type === "credit card"){
+      if (!signUpRegistration.paymentInfo.ccNum.match(!signUpRegistration.paymentInfo.ccNum) || !signUpRegistration.paymentInfo.ccNum.match(atLeast16numbersFilter)  ) {
+        console.log("please fill out a valid credit card number");
+      } else if (!signUpRegistration.paymentInfo.zipCode.match(zipCodeFilter)){
+        console.log("please fill out the zip code associated with your credit card");
+      } else if (!signUpRegistration.paymentInfo.cvvFilter.match(cvvFilter)){
+        console.log("please fill out the cvv number")
+      }
+    }
+
+  }; //end form validation function
+
+
+
 // EVENT LISTENERS ----------------------------
 
   // event listener for name field input
@@ -305,7 +395,7 @@ $(document).ready(function() {
 
           // read actvities selection to signUpRegistration object
           signUpRegistration.totalCost = totalAmt;
-          signUpRegistration.activiies = selectedActivities;
+          signUpRegistration.activities = selectedActivities;
 
       }); // end activities input eventlistener
 
@@ -322,7 +412,12 @@ $(document).ready(function() {
     // move selected payment option from paymentOptions
       displayPaymentOptions( $(this).val() );
 
+    // capture payment choice
+      signUpRegistration.paymentInfo.type = $(this).val();
+
   }); // end #payment addEventListener
+
+
 
 // FUNCTION CALLS
 
@@ -340,7 +435,9 @@ $(document).ready(function() {
 
 // bind anonymous function to submit form action
  $('form').submit(function(e){
+   getCCPaymentInfo();
    console.log(signUpRegistration);
+
    e.preventDefault()
  });
 
