@@ -149,32 +149,21 @@ $(document).ready(function() {
   // function to add event listeners to capture payment info
   const getCCPaymentInfo = function(){
 
-  // capture Credit Card payment input
-  // $('#cc-num').change(function(){
+  // capture Credit Card number input
     signUpRegistration.paymentInfo.ccNum = document.getElementById('cc-num').value;
-  // });
 
   // capture CVV payment input
-  // $('#cvv').change(function(){
-    signUpRegistration.paymentInfo.cvv == document.getElementById('cvv').value;
-  // });
+      signUpRegistration.paymentInfo.cvv == document.getElementById('cvv').value;
 
   // capture Credit Card payment input
-  // $('#zip').change(function(){
-    signUpRegistration.paymentInfo.zip == document.getElementById('zip').value;
-  // });
+      signUpRegistration.paymentInfo.zip == document.getElementById('zip').value;
 
   // capture expiration month selected
-  // $('#exp-month').change(function(){
-    signUpRegistration.paymentInfo.expMonth = document.getElementById('exp-month').value;
-    //$('exp-month option:selected').value;
-  // });
+      signUpRegistration.paymentInfo.expMonth = document.getElementById('exp-month').value;
 
   // capture expiration year selected
-  // $('#exp-year').change(function(){
-    signUpRegistration.paymentInfo.expYear = document.getElementById('exp-year').value;
-    //$('exp-year option:selected').value;
-  // });
+      signUpRegistration.paymentInfo.expYear = document.getElementById('exp-year').value;
+
 }; // end getCCPaymentInfo function
 
   // function to perform validation on required form fields
@@ -435,7 +424,9 @@ $(document).ready(function() {
 
 // bind anonymous function to submit form action
  $('form').submit(function(e){
-   getCCPaymentInfo();
+   if (signUpRegistration.paymentInfo.type === "credit card"){
+     getCCPaymentInfo();
+    }
    console.log(signUpRegistration);
 
    e.preventDefault()
