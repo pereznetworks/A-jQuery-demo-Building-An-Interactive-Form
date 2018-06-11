@@ -29,7 +29,7 @@
 	•	When a user selects the "Bitcoin" payment option, the Bitcoin information should display, and the credit card and “PayPal” information should be hidden.
 		NOTE: The user should not be able to select the "Select Payment Method" option from the payment select menu, because the user should not be able to submit the form without a chosen payment option.  
 
-# TODO : Form validation:
+# TODO : Form validation: NEEDS TESTING
 
 	•	If any of the following validation errors exist, prevent the user from submitting the form:
 	•	Name field can't be blank.
@@ -41,7 +41,7 @@
 	•	The CVV should only accept a number that is exactly 3 digits long.
 		NOTE: Make sure your validation is only validating Credit Card info if Credit Card is the selected payment method.  
 
-# TODO : Form validation messages:
+# DONE : Form validation messages:
 
 	•	Provide some kind of indication when there’s a validation error. The field’s borders could turn red, for example, or even better for the user would be if a red text message appeared near the field.
 	•	The following fields should have some obvious form of an error indication:

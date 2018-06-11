@@ -1,0 +1,30 @@
+
+Name
+
+document.getElementById('name').parentNode.children[2].style = 'margin-bottom:0;'
+
+document.getElementById('name').parentNode.insertBefore(test, document.getElementById('name').parentNode.children[3])
+
+document.getElementById('name').parentNode.children[3].remove('*')
+document.getElementById('name').parentNode.children[2].style = 'padding-bottom:.8em;'
+
+Email
+
+document.getElementById('mail').parentNode.children[4].style = 'margin-bottom:0;'
+
+document.getElementById('mail').parentNode.insertBefore(test, document.getElementById('mail').parentNode.children[5])
+
+document.getElementById('mail').parentNode.children[5].remove('*')
+document.getElementById('mail').parentNode.children[4].style = 'padding-bottom:.8em;'
+
+Activities
+
+document.getElementsByClassName('activities')[0].children[7].append(test)
+
+document.getElementsByClassName('activities')[0].children[7].children[1].remove('*')
+
+Payment Info
+
+document.getElementById('payment').parentNode.children.append(test)
+
+document.getElementById('payment').parentNode.children[3].remove('*')

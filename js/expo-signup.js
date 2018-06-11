@@ -1,5 +1,4 @@
 
-
 $(document).ready(function() {
 
 // CONSTANT variables ------------------------------
@@ -36,7 +35,7 @@ $(document).ready(function() {
   blankOption.textContent = "<--- Please select a theme";
   blankOptGrp.append(blankOption);
 
-  // const vars for payment option html nodes
+  // select payment options thru parent of element with id 'payment'
   const paymentFieldset = document.getElementById('payment').parentNode.children;
   const paymentOptions = document.createElement('div');
 
@@ -45,6 +44,43 @@ $(document).ready(function() {
   // build a legend element to display total
   const total = document.createElement('legend');
   total.id = "total";
+
+  // building credit card info err msg elements
+      const CCerrInfoDiv = document.createElement('div');
+      CCerrInfoDiv.setAttribute('id', 'CCerrInfoDiv');
+      CCerrInfoDiv.style='width:38em;height:10em;';
+
+      const ccNumErrDiv = document.createElement('div');
+      ccNumErrDiv.setAttribute('class', 'col-6 col');
+      ccNumErrDiv.style='width:19em;';
+      const ccNumPgh = document.createElement('p');
+      ccNumPgh.style = 'text-align:right;color:red;margin: 0 .5em .5em .5em;';
+      ccNumPgh.setAttribute('id', 'ccNum-ErrMsg');
+      ccNumPgh.textContent = '';
+      ccNumErrDiv.append(ccNumPgh);
+
+      const zipErrDiv = document.createElement('div');
+      zipErrDiv.setAttribute('class', 'col-3 col');
+      zipErrDiv.style='width:9em;';
+      const zipPgh= document.createElement('p');
+      zipPgh.style = 'text-align:right;color:red;margin: 0 .5em .5em .5em;';
+      zipPgh.setAttribute('id', 'zipCode-ErrMsg');
+      zipPgh.textContent = '';
+      zipErrDiv.append(zipPgh);
+
+      const cvvErrDiv = document.createElement('div');
+      cvvErrDiv.setAttribute('class', 'col-3 col');
+      cvvErrDiv.style='width:6em;';
+      const cvvPgh= document.createElement('p');
+      cvvPgh.style = 'text-align:right;color:red;margin: 0 .5em .5em .5em;';
+      cvvPgh.setAttribute('id', 'cvv-ErrMsg');
+      cvvPgh.textContent = '';
+      cvvErrDiv.append(cvvPgh);
+
+   //credit card, err msg div/pgh eleements are added to main Credit Card err msg div
+      CCerrInfoDiv.append(ccNumErrDiv);
+      CCerrInfoDiv.append(zipErrDiv);
+      CCerrInfoDiv.append(cvvErrDiv);
 
 // FUNCTIONS declarations-----------------------------------
 
@@ -144,82 +180,295 @@ $(document).ready(function() {
     $('#payment').parent().children()[2].value = "credit card";
     displayPaymentOptions("credit card");
     signUpRegistration.paymentInfo.type = "credit card";
+
+    // only get CC payment info IF payment type = credit card
+    if (signUpRegistration.paymentInfo.type === "credit card"){
+      getCCPaymentInfo();
+     }
   };
 
   // function to add event listeners to capture payment info
   const getCCPaymentInfo = function(){
 
-  // capture Credit Card number input
-    signUpRegistration.paymentInfo.ccNum = document.getElementById('cc-num').value;
+    // capture Credit Card number input
+      signUpRegistration.paymentInfo.ccNum = document.getElementById('cc-num').value;
 
-  // capture CVV payment input
-      signUpRegistration.paymentInfo.cvv == document.getElementById('cvv').value;
+    // capture CVV payment input
+        signUpRegistration.paymentInfo.cvv = document.getElementById('cvv').value;
 
-  // capture Credit Card payment input
-      signUpRegistration.paymentInfo.zip == document.getElementById('zip').value;
+    // capture Credit Card payment input
+        signUpRegistration.paymentInfo.zip = document.getElementById('zip').value;
 
-  // capture expiration month selected
-      signUpRegistration.paymentInfo.expMonth = document.getElementById('exp-month').value;
+    // capture expiration month selected
+        signUpRegistration.paymentInfo.expMonth = document.getElementById('exp-month').value;
 
-  // capture expiration year selected
-      signUpRegistration.paymentInfo.expYear = document.getElementById('exp-year').value;
+    // capture expiration year selected
+        signUpRegistration.paymentInfo.expYear = document.getElementById('exp-year').value;
 
-}; // end getCCPaymentInfo function
+  }; // end getCCPaymentInfo function
+
+  const buildErrMsgElement = function(errMsgText){
+    const errMsgElement = document.createElement('p');
+    errMsgElement.style = 'color:red;padding-bottom:.8em;'
+    errMsgElement.setAttribute('id', 'test');
+    errMsgElement.textContent = errMsgText;
+    return errMsgElement;
+  };
+
+  const displayFormErrMsg = function(errMsg){
+
+    // select fieldset for name, email and job role fields
+    const basicInfoFieldSet = document.getElementById('name').parentNode;
+
+    // add err msg for Name field
+    if (errMsg.nameErr) {
+      const nameInputField = document.getElementById('name');
+      const emailLabel = basicInfoFieldSet.children[3];
+      const nameBlankMsg = 'Please, fill in your name';
+      nameInputField.style = 'margin-bottom:0;';
+      basicInfoFieldSet.insertBefore(buildErrMsgElement(nameBlankMsg), emailLabel);
+    } else {
+      // remove err msg for Name field
+      nameInputErrMsgElement = basicInfoFieldSet.children[3];
+      nameInputErrMsgElement.remove('*');
+      nameInputField.style = 'padding-bottom:.8em;';
+    }
+
+      // add err msg for Email field blank
+    if (errMsg.emailBlankErr) {
+      const emailInputField = document.getElementById('mail');
+      const titleLabel = document.getElementById('title').previousElementSibling;
+      emailInputField.style = 'margin-bottom:0;';
+      const emailBlankMsg = 'Please, fill in your email address';
+      basicInfoFieldSet.insertBefore(buildErrMsgElement(emailBlankMsg), titleLabel);
+    } else if (errMsg.emailFormatInvalid) {
+      // add err msg for Email input invalid
+      const emailInputField = document.getElementById('mail');
+      const titleLabel = document.getElementById('title').previousElementSibling;
+      emailInputField.style = 'margin-bottom:0;';
+      const emailInvalidMsg = 'Oops, we need a valid email address to verify your registration';
+      basicInfoFieldSet.insertBefore(buildErrMsgElement(emailInvalidMsg), titleLabel);
+    } else {
+      // remove err msg for Email field
+      const emailBlankMsgElement = basicInfoFieldSet.children[5];
+      emailBlankMsgElement.remove('*');
+      emailInputField.style = 'padding-bottom:.8em;';
+    }
+
+    // select activites FieldSet
+    const shirtFieldSet = document.getElementsByClassName('shirt')[0];
+
+    // add err msg for Activities
+    if (errMsg.noShirtSelectionErr){
+      const noShirtSelectionErrMsg = "Don't forget to choose a shirt size, design and color";
+      noShirtErrMsgElmnt = buildErrMsgElement(noShirtSelectionErrMsg);
+      noShirtErrMsgElmnt.setAttribute('id', 'noShirtErrMsg');
+      noShirtErrMsgElmnt.style = 'color:red;padding-bottom:.8em;float:left;display:block;width:100%';
+      shirtFieldSet.append(noShirtErrMsgElmnt);
+    } else if ( document.getElementById('noShirtErrMsg') !== null ) {
+      // remove err msg for Activities
+      document.getElementById('noShirtErrMsg').remove('*');
+    }
+
+    // select activites Fieldset
+    const activitesFieldSet = document.getElementsByClassName('activities')[0];
+
+    // add err msg for Activities
+    if (errMsg.activitesErr){
+      const activitesErrMsg = 'Please choose from the activiies';
+      const noActErrMsgElmnt = buildErrMsgElement(activitesErrMsg);
+      noActErrMsgElmnt.setAttribute('id', 'noActErrMsgElmnt');
+      activitesFieldSet.append(noActErrMsgElmnt);
+    } else if ( document.getElementById('noActErrMsgElmnt') !== null){
+      // remove err msg for Activities
+      document.getElementById('noAct-ErrMsgElmnt').remove('*');
+    }
+
+    // select Payment Info fieldset
+    paymentInfoFieldset = document.getElementById('payment').parentNode.children;
+     // add err msg for no payment selected
+    if (errMsg.noPaymentTypeErr) {
+      const paymntTypeErrMsgText = 'Please select a payment type';
+      const paymentTypeErrMsgElement = buildErrMsgElement(paymntTypeErrMsgText);
+      paymentTypeErrMsgElement.setAttribute('id', 'paymentType-ErrMsg')
+      paymentFieldset.append();
+    } else if (document.getElementById('paymentType-ErrMsg') !== null ){
+      // remove err msg
+      document.getElementById('paymentType-ErrMsg').remove('*');
+    } // end display form err msgs
+
+    // select activites Fieldset
+    const creditCardFieldSet = document.getElementsByClassName('credit-card')[0];
+
+    // CCerrInfoDiv created above, has a set width and hieght
+    // contains 3 child div elements, for each field of credit card info
+    // child div contains a paragragh element with set width
+
+    if (errMsg.ccNumErr || errMsg.zipCodeErr || errMsg.cvvErr) {
+      // if any errors on Credit Card input, add credit card err msg Div to html Page
+      creditCardFieldSet.insertBefore(CCerrInfoDiv, document.getElementsByClassName('credit-card')[0].children[3] );
+    } else if ( document.getElementById('CCerrInfoDiv') !== null ) {
+      $('#CCerrInfoDiv').remove('*');
+    // if no credit card input field errors, remove the CCerrInfoDiv
+    }
+
+    // now, simply add/remove the textContent to/from err msg pgh elements as needed
+
+    if (errMsg.ccNumErr){
+      $('#ccNum-ErrMsg')[0].textContent = 'invalid credit-card num';
+      // err msg for credit-card num input field
+    } else {
+      $('#ccNum-ErrMsg').textContent = '';
+    }
+
+    if (errMsg.zipCodeErr){
+      $('#zipCode-ErrMsg')[0].textContent = 'invalid zip code';
+      // err msg for zipCode input field
+    } else {
+      $('#zipCode-ErrMsg').textContent = '';
+    }
+
+    if (errMsg.cvvErr){
+      $('#cvv-ErrMsg')[0].textContent = 'invalid cvv';
+      // err msg for cvv input field
+    } else {
+      $('#cvv-ErrMsg').textContent = '';
+    }
+
+  } // end displayFormErrMsg function
 
   // function to perform validation on required form fields
   const formValidation = function(signUpRegistration){
 
+    const errMsg = {};
+    // flag that gets returned as FALSE if any fields not valid
+    let formValid = true;
+
     // check for valid name input
      // regExp for checking proper noun input
      // const nameFilter = /[A-Z][A-Za-z' -]+/;
-      // probably will not need to check format of name input, but just in case
+      // probably will not need to check format of name input, i.e. Pronoun-like format,
+       //but just in case, keeping this regExp
         // for now, just checking that something was typed in this field
-    if (signUpRegistration.name === '') {
-      // show appropriate msg,
+
+    if (!signUpRegistration.name) {
+      // show appropriate msg
+      errMsg.nameErr = true;
       console.log("you forgot to fill in your name");
+      formValid = false;
+
+    } else {
+      console.log('name input valid');
     }
 
-    // check for valid email input
-      // regExp for checking email input
-    const emailFilter = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (!signUpRegistration.email.match(emailFilter) ){
-      // show appropriate msg,
+    // regExp for checking email input
+      // taken from MDN articler on form validation
+        // - modified to return a match ONLY IF all three parts of email address are present
+          // an alias (to left of @, the @ itself, any kind of domain name, and something following a '.'  )
+            // however, not actually checking for real top-level domain like .com., org, .edu, .gov, etc...
+    const emailFilter = /^[[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)]*$/;
+
+    // check for email input then for valid email input
+
+    if (!signUpRegistration.mail) {
+      // show appropriate msg
+      errMsg.emailBlankErr = true;
+      console.log("you forgot to fill in your email address");
+      formValid = false;
+
+    } else if (!signUpRegistration.mail.match(emailFilter)){
+      // show appropriate msg
+      errMsg.emailFormatInvalid = true;
       console.log("we need a valid email address to verify your registration");
+      formValid = false;
+
+    } else {
+      console.log('email input valid');
     }
+
 
     // check for valid shirt selection
-    if (signUpRegistration.shirtDesign === "" || signUpRegistration.shirtSize === "" || signUpRegistration.shirtColor === "") {
-      // show appropriate msg,
+    if (!signUpRegistration.shirtDesign) {
+      // show appropriate msg
+      errMsg.noShirtSelectionErr = true;
       console.log("don't forget to select your shirt design, size and color");
+      formValid = false;
+    } else {
+      console.log('shirt selection valid');
     }
 
     // check for selection of activities
     if (!signUpRegistration.activities){
+      errMsg.activitesErr = true;
       console.log('no activities selected');
+      formValid = false;
+    } else {
+      console.log('activities input valid');
     }
 
-    // check for valid cc payment info
-      // regExp filters for checking cc payment input
+
+    // regExp filters for checking cc payment input
     const atLeast13numbersFilter = /[0-9]{13}/;
     const atLeast16numbersFilter = /[0-9]{16}/;
     const zipCodeFilter = /[0-9]{5}/;
     const cvvFilter = /[0-9]{3}/;
 
-    if (!signUpRegistration.paymentInfo){
-      // show appropriate msg
-      console.log("please select a payment type");
-    } else if (signUpRegistration.paymentInfo.type === "credit card"){
-      if (!signUpRegistration.paymentInfo.ccNum.match(!signUpRegistration.paymentInfo.ccNum) || !signUpRegistration.paymentInfo.ccNum.match(atLeast16numbersFilter)  ) {
-        console.log("please fill out a valid credit card number");
-      } else if (!signUpRegistration.paymentInfo.zipCode.match(zipCodeFilter)){
-        console.log("please fill out the zip code associated with your credit card");
-      } else if (!signUpRegistration.paymentInfo.cvvFilter.match(cvvFilter)){
-        console.log("please fill out the cvv number")
-      }
+    // checking for valid payment type selection
+    if (signUpRegistration.paymentInfo.type === 'select_method'){
+      errMsg.noPaymentTypeErr = true;
+      console.log('please select a payment type')
+    } else {
+      console.log('payment type valid');
     }
 
-  }; //end form validation function
+    // if credit card payment type = credit card, then check for valid cc payment info
+    if (document.getElementById('credit-card') !== null){
 
+      // check for valid cc number
+      if ( parseInt(signUpRegistration.paymentInfo.ccNum).toString() === 'NaN'){
+        errMsg.ccNumErr = true;
+        console.log('credit card number must be numbers only, at least 13 or at least 16 digits');
+      } else if (parseInt(parseInt(signUpRegistration.paymentInfo.ccNum).toString().length < 13 || signUpRegistration.paymentInfo.ccNum).toString().length < 16){
+        errMsg.ccNumErr = true;
+        console.log("please fill out a valid credit card number")
+        formValid = false;
+      } else {
+        console.log('Credit Card num input valid');
+      }
+
+      // check for valid zipcode
+      if ( parseInt(signUpRegistration.paymentInfo.zipCode).toString() === 'NaN'){
+       errMsg.zipCodeErr = true;
+       console.log('zip code must be 5 digits, numbers only');
+      } else if ( parseInt(signUpRegistration.paymentInfo.zipCode).toString().length != 5 ){
+        errMsg.zipCodeErr = true;
+        console.log("please fill out the zip code associated with your credit card");
+        formValid = false;
+      } else {
+        console.log('Zipcode input valid');
+      }
+
+      // check for valid CVV code
+      if ( parseInt(signUpRegistration.paymentInfo.cvv).toString() === 'NaN'){
+       errMsg.cvvErr = true;
+       console.log('cvv must be 3 digits, numbers only');
+      } else if ( parseInt(signUpRegistration.paymentInfo.cvv).toString().length != 3){
+        errMsg.cvvErr = true;
+        console.log("please fill out the cvv number");
+        formValid = false;
+      } else {
+        console.log('Credit Card CVV info input valid');
+      }
+    } // end if payment type = credit card
+    displayFormErrMsg(errMsg);
+    return formValid;
+
+    // else if (signUpRegistration.paymentInfo.ccNum.match(signUpRegistration.paymentInfo.ccNum).length !== 1 || signUpRegistration.paymentInfo.ccNum.match(atLeast16numbersFilter).length !== 1 ) {
+    //   console.log("please fill out a valid credit card number");
+    //   formValid = false;
+    // }
+
+  }; //end form validation function
 
 
 // EVENT LISTENERS ----------------------------
@@ -237,7 +486,6 @@ $(document).ready(function() {
   // event listener for job title select value change
     // if job title changed to 'other' display other Job Role input field
     $('#title').change(function() {
-
 
      if ($(this).val() === 'other') {
           document.getElementById('title').parentNode.append(otherJobRoleInput);
@@ -280,7 +528,7 @@ $(document).ready(function() {
   // forEach activity label function
     // set up eventlistener for each activity input
       // when an activity input is selected, capture, filter out activity details
-  document.querySelectorAll('.activities input').forEach(function(item, index){
+    document.querySelectorAll('.activities input').forEach(function(item, index){
 
       // used to track selected activiies,
         // scoped to activities label input function
@@ -393,23 +641,25 @@ $(document).ready(function() {
 
   // event listener for change in shirt design value
     // displaying only shirt colors that go with Shirt design theme
-  $('#payment').change(function() {
+    $('#payment').change(function() {
 
-    // move current payment method back to paymentOptions html collection node
+    // move current payment methods back to paymentOptions html collection node
       paymentOptions.append( $('#payment').parent().children()[3] );
 
-    // move selected payment option from paymentOptions
+    // display selected payment options
       displayPaymentOptions( $(this).val() );
 
     // capture payment choice
       signUpRegistration.paymentInfo.type = $(this).val();
 
+    // only get CC payment info IF payment type = credit card
+    if (signUpRegistration.paymentInfo.type === "credit card"){
+      getCCPaymentInfo();
+     }
+
   }); // end #payment addEventListener
 
-
-
-// FUNCTION CALLS
-
+// Function calls
   // move payment options to paymentOptions html node
     getPayOptions();
 
@@ -422,19 +672,17 @@ $(document).ready(function() {
   // set focus on first element field
     focusOnFirstField($nameInput);
 
-// bind anonymous function to submit form action
- $('form').submit(function(e){
-   if (signUpRegistration.paymentInfo.type === "credit card"){
-     getCCPaymentInfo();
-    }
-   console.log(signUpRegistration);
-
-   e.preventDefault()
- });
-
+// FORM SUBMIT
 // triggers anonymous form submit action
- $('button').click(function(){
-   $('form').submit();
- });
+   document.getElementsByTagName('form')[0].addEventListener('click', function(e){
+
+     e.preventDefault();
+
+     // only sumbit if formValidation funciton returns TRUE
+     let allInputValid = formValidation(signUpRegistration);
+
+   });
+
+
 
 });
