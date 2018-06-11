@@ -248,22 +248,24 @@ $(document).ready(function() {
       const emailBlankMsgElmnt = buildErrMsgElement(emailBlankMsg);
       emailBlankMsgElmnt.setAttribute('id', 'emailBlankMsgElmnt');
       basicInfoFieldSet.insertBefore(emailBlankMsgElmnt, titleLabel);
-    } else if (errMsg.emailFormatInvalid && document.getElementById('emailInvalidMsgElmnt') === null ) {
+    } else if (!errMsg.emailBlankErr && document.getElementById('emailBlankMsgElmnt') !== null){
+      // remove err msg for blank Email field
+      $('#emailBlankMsgElmnt').remove('*');
+      document.getElementById('mail').style = 'padding-bottom:.8em;';
+    }
+
+    if (errMsg.emailFormatInvalid && document.getElementById('emailInvalidMsgElmnt') === null ) {
       // add err msg for Email input invalid
       const emailInputField = document.getElementById('mail');
       const titleLabel = document.getElementById('title').previousElementSibling;
       emailInputField.style = 'margin-bottom:0;';
       const emailInvalidMsg = 'Oops, we need a valid email address to verify your registration';
-      const emailInvalidMsgElement = buildErrMsgElement(emailInvalidMsg);
+      const emailInvalidMsgElmnt = buildErrMsgElement(emailInvalidMsg);
       emailInvalidMsgElmnt.setAttribute('id', 'emailInvalidMsgElmnt');
       basicInfoFieldSet.insertBefore(emailInvalidMsgElmnt, titleLabel);
     } else if (!errMsg.emailFormatInvalid && document.getElementById('emailInvalidMsgElmnt') !== null ){
       // remove err msg for invalid Email field
       $('#emailInvalidMsgElmnt').remove('*');
-      document.getElementById('mail').style = 'padding-bottom:.8em;';
-    } else if (!errMsg.emailBlankErr && document.getElementById('emailBlankMsgElmnt') !== null){
-      // remove err msg for blank Email field
-      $('#emailBlankMsgElmnt').remove('*');
       document.getElementById('mail').style = 'padding-bottom:.8em;';
     }
 
