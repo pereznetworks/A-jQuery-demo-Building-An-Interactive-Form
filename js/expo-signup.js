@@ -361,11 +361,9 @@ $(document).ready(function() {
       if (!signUpRegistration.name) {
         // if name field blank, set nameErr to true
         this.errMsg.nameErr = true;
-        this.inValidReqFields += 1;
       } else {
         // else nameErr is false
         this.errMsg.nameErr = false;
-        this.inValidReqFields -= 1;
       }
       // if there is invalid input, display err msgs
       // or remove err msgs if needed
@@ -385,20 +383,16 @@ $(document).ready(function() {
       if (!signUpRegistration.mail) {
         // if email field is blank, set emailBlankErr to true
         this.errMsg.emailBlankErr = true;
-        this.inValidReqFields += 1;
       } else {
         // else emailBlankErr is false
         this.errMsg.emailBlankErr = false;
-        this.inValidReqFields -= 1;
 
         if (!signUpRegistration.mail.match(emailFilter)){
           // if email input is not valid format, emailFormatInvalid is true
           this.errMsg.emailFormatInvalid = true;
-          this.inValidReqFields += 1;
         } else {
           // else emailFormatInvalid is false
           this.errMsg.emailFormatInvalid = false;
-          this.inValidReqFields -= 1;
         }
       }
       // if there is invalid input, display err msgs
@@ -411,11 +405,9 @@ $(document).ready(function() {
         if (!signUpRegistration.shirtDesign) {
           // if no selection, err is true
           this.errMsg.noShirtSelectionErr = true;
-          this.inValidReqFields += 1;
         } else {
           // else if there is selection, err is false
           this.errMsg.noShirtSelectionErr = false;
-          this.inValidReqFields -= 1;
         }
         // if there is invalid input, display err msgs
         // or remove err msgs if needed
@@ -425,11 +417,9 @@ $(document).ready(function() {
         // check for selection of activities
         if (!signUpRegistration.activities || signUpRegistration.totalCost === 0){
           this.errMsg.activitesErr = true;
-          this.inValidReqFields += 1;
         } else {
           // if an activity selected, err is false
           this.errMsg.activitesErr = false;
-          this.inValidReqFields -= 1;
         }
         // if there is invalid input, display err msgs
         // or remove err msgs if needed
@@ -445,10 +435,8 @@ $(document).ready(function() {
         // checking for valid payment type selection
         if (signUpRegistration.paymentInfo.type === 'select_method'){
           this.errMsg.noPaymentTypeErr = true; // no type selected
-          this.inValidReqFields += 1;
         } else {
           this.errMsg.noPaymentTypeErr = false; // there is type selected
-          this.inValidReqFields -= 1;
         }
 
         // if credit card payment type = credit card, then check for valid cc payment info
@@ -459,37 +447,28 @@ $(document).ready(function() {
           // check for valid cc number
           if ( parseInt(signUpRegistration.paymentInfo.ccNum).toString() === 'NaN'){
             this.errMsg.ccNumErr = true; // if not a Number, err is true
-            this.inValidReqFields += 1;
           } else if (parseInt(parseInt(signUpRegistration.paymentInfo.ccNum).toString().length < 13 || signUpRegistration.paymentInfo.ccNum).toString().length > 16){
             this.errMsg.ccNumErr = true; // if not correct length, err is true
-            this.inValidReqFields += 1;
           } else {
             this.errMsg.ccNumErr = false; // else no err
-            this.inValidReqFields -= 1;
           }
 
           // check for valid zipcode
           if ( parseInt(signUpRegistration.paymentInfo.zip).toString() === 'NaN'){
             this.errMsg.zipCodeErr = true; // if not a Number, err is true
-            this.inValidReqFields += 1;
           } else if ( parseInt(signUpRegistration.paymentInfo.zip).toString().length !== 5 ){
             this.errMsg.zipCodeErr = true; // if not correct length, err is true
-            this.inValidReqFields += 1;
           } else {
             this.errMsg.zipCodeErr = false; // else no err
-            this.inValidReqFields -= 1;
           }
 
           // check for valid CVV code
           if ( parseInt(signUpRegistration.paymentInfo.cvv).toString() === 'NaN'){
             this.errMsg.cvvErr = true; // if not a Number, err is true
-            this.inValidReqFields += 1;
           } else if ( parseInt(signUpRegistration.paymentInfo.cvv).toString().length != 3){
             this.errMsg.cvvErr = true; // if not correct length, err is true
-            this.inValidReqFields += 1;
           } else {
             this.errMsg.cvvErr = false; // else no err
-            this.inValidReqFields -= 1;
           }
 
         } // end if payment type = credit card
@@ -503,6 +482,34 @@ $(document).ready(function() {
       this.verifyActivities(signUpRegistration);
       this.verifyShirtSelection(signUpRegistration);
       this.verifyPaymentInfo(signUpRegistration);
+      this.inValidReqFields = 0;
+      if (this.errMsg.nameErr) {
+        this.inValidReqFields += 1;
+      }
+      if (this.errMsg.emailBlankErr) {
+        this.inValidReqFields += 1;
+      }
+      if (this.errMsg.emailFormatInvalid) {
+        this.inValidReqFields += 1;
+      }
+      if (this.errMsg.noShirtSelectionErr) {
+        this.inValidReqFields += 1;
+      }
+      if (this.errMsg.activitesErr) {
+        this.inValidReqFields += 1;
+      }
+      if (this.errMsg.noPaymentTypeErr) {
+        this.inValidReqFields += 1;
+      }
+      if (this.errMsg.ccNumErr) {
+        this.inValidReqFields += 1;
+      }
+      if (this.errMsg.zipCodeErr) {
+        this.inValidReqFields += 1;
+      }
+      if (this.errMsg.cvvErr) {
+        this.inValidReqFields += 1;
+      }
     }, // end verifyAllRequiredFields
     inValidInputDisplayErrMsg:function(){
         displayFormErrMsg(this.errMsg);
@@ -526,7 +533,7 @@ $(document).ready(function() {
 
   // event listener for job title select value change
     // if job title changed to 'other' display other Job Role input field
-    $('#title').focusout(function(e){
+    $('#title').change(function(e){
      if ($(this).val() === 'other') {
           document.getElementById('title').parentNode.append(otherJobRoleInput);
           otherJobTitleSelected = true;
@@ -559,10 +566,11 @@ $(document).ready(function() {
 
   // event listener for shirt color value
     // capture shirt size, design and color
-    $('#color').focusout(function(e){
+    $('#color').change(function(e){
       signUpRegistration.shirtSize = document.getElementById('size').value;
       signUpRegistration.shirtDesign = document.getElementById('design').value;
       signUpRegistration.shirtColor = document.getElementById('color').value;
+      formValidation.verifyShirtSelection(signUpRegistration);
     });
 
   // forEach activity label function
@@ -716,10 +724,14 @@ $(document).ready(function() {
     focusOnFirstField($nameInput);
 
 // FORM SUBMIT
-   $('form').submit(function(e){
-     e.preventDefault();
-     // if there is any invalid input, prevent form submit
-     formValidation.verifyAllRequiredFields(signUpRegistration);
-   }); // end form submit eventlistener
+  document.getElementsByTagName('form')[0].addEventListener("submit", function(e){
+    formValidation.verifyAllRequiredFields(signUpRegistration);
 
+    if (formValidation.inValidReqFields > 0){
+      e.preventDefault();
+    }
+  }, false);
+
+  // document.getElementsByTagName('button')[0].addEventListener('click', function(e){
+  // });
 }); // end document ready function
