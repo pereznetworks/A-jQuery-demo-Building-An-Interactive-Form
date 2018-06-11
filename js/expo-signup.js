@@ -194,16 +194,16 @@ $(document).ready(function() {
       signUpRegistration.paymentInfo.ccNum = document.getElementById('cc-num').value;
 
     // capture CVV payment input
-        signUpRegistration.paymentInfo.cvv = document.getElementById('cvv').value;
+      signUpRegistration.paymentInfo.cvv = document.getElementById('cvv').value;
 
     // capture Credit Card payment input
-        signUpRegistration.paymentInfo.zip = document.getElementById('zip').value;
+      signUpRegistration.paymentInfo.zip = document.getElementById('zip').value;
 
     // capture expiration month selected
-        signUpRegistration.paymentInfo.expMonth = document.getElementById('exp-month').value;
+      signUpRegistration.paymentInfo.expMonth = document.getElementById('exp-month').value;
 
     // capture expiration year selected
-        signUpRegistration.paymentInfo.expYear = document.getElementById('exp-year').value;
+      signUpRegistration.paymentInfo.expYear = document.getElementById('exp-year').value;
 
   }; // end getCCPaymentInfo function
 
@@ -229,7 +229,7 @@ $(document).ready(function() {
       const nameBlankErrElmnt = buildErrMsgElement(nameBlankMsg);
       nameBlankErrElmnt.setAttribute('id', 'nameBlankErrElmnt');
       basicInfoFieldSet.insertBefore(nameBlankErrElmnt, emailLabel);
-    } else if(document.getElementById('nameBlankErrElmnt') !== null) {
+    } else if(!errMsg.nameErr && document.getElementById('nameBlankErrElmnt') !== null) {
       // remove err msg for Name field
       $('#nameBlankErrElmnt').remove('*');
       document.getElementById('name').style = 'padding-bottom:.8em;';
@@ -253,11 +253,11 @@ $(document).ready(function() {
       const emailInvalidMsgElement = buildErrMsgElement(emailInvalidMsg);
       emailInvalidMsgElmnt.setAttribute('id', 'emailInvalidMsgElmnt');
       basicInfoFieldSet.insertBefore(emailInvalidMsgElmnt, titleLabel);
-    } else if (document.getElementById('emailInvalidMsgElmnt') !== null ){
+    } else if (!errMsg.emailFormatInvalid && document.getElementById('emailInvalidMsgElmnt') !== null ){
       // remove err msg for invalid Email field
       $('#emailInvalidMsgElmnt').remove('*');
       document.getElementById('mail').style = 'padding-bottom:.8em;';
-    } else if (document.getElementById('emailBlankMsgElmnt') !== null){
+    } else if (!errMsg.emailBlankErr && document.getElementById('emailBlankMsgElmnt') !== null){
       // remove err msg for blank Email field
       $('#emailBlankMsgElmnt').remove('*');
       document.getElementById('mail').style = 'padding-bottom:.8em;';
@@ -273,7 +273,7 @@ $(document).ready(function() {
       noShirtErrMsgElmnt.setAttribute('id', 'noShirtErrMsg');
       noShirtErrMsgElmnt.style = 'color:red;padding-bottom:.8em;float:left;display:block;width:100%';
       shirtFieldSet.append(noShirtErrMsgElmnt);
-    } else if ( document.getElementById('noShirtErrMsg') !== null ) {
+    } else if ( !errMsg.noShirtSelectionErr && document.getElementById('noShirtErrMsg') !== null ) {
       // remove err msg for Activities
       document.getElementById('noShirtErrMsg').remove('*');
     }
@@ -287,9 +287,9 @@ $(document).ready(function() {
       const noActErrMsgElmnt = buildErrMsgElement(activitesErrMsg);
       noActErrMsgElmnt.setAttribute('id', 'noActErrMsgElmnt');
       activitesFieldSet.append(noActErrMsgElmnt);
-    } else if ( document.getElementById('noActErrMsgElmnt') !== null){
+    } else if ( !errMsg.activitesErr && document.getElementById('noActErrMsgElmnt') !== null){
       // remove err msg for Activities
-      document.getElementById('noAct-ErrMsgElmnt').remove('*');
+      document.getElementById('noActErrMsgElmnt').remove('*');
     }
 
     // select Payment Info fieldset
@@ -300,7 +300,7 @@ $(document).ready(function() {
       const paymentTypeErrMsgElement = buildErrMsgElement(paymntTypeErrMsgText);
       paymentTypeErrMsgElement.setAttribute('id', 'paymentType-ErrMsg')
       paymentFieldset.append();
-    } else if (document.getElementById('paymentType-ErrMsg') !== null ){
+    } else if (!errMsg.noPaymentTypeErr && document.getElementById('paymentType-ErrMsg') !== null ){
       // remove err msg
       document.getElementById('paymentType-ErrMsg').remove('*');
     } // end display form err msgs
@@ -345,156 +345,188 @@ $(document).ready(function() {
 
   } // end displayFormErrMsg function
 
-  // function to perform validation on required form fields
-  const formValidation = function(signUpRegistration){
+  // form validation object, flags and functions
+  const formValidation = {
 
-    const errMsg = {};
-    // flag that gets returned as FALSE if any fields not valid
-    let formValid = true;
+    errMsg:{}, //object to compile flagged input/field errs
+    inValidReqFields:0,   // flag set to FALSE if any fields not valid
+    verifyName:function(signUpRegistration){
 
-    // check for valid name input
-     // regExp for checking proper noun input
-     // const nameFilter = /[A-Z][A-Za-z' -]+/;
-      // probably will not need to check format of name input, i.e. Pronoun-like format,
-       //but just in case, keeping this regExp
-        // for now, just checking that something was typed in this field
-
-    if (!signUpRegistration.name) {
-      // show appropriate msg
-      errMsg.nameErr = true;
-      console.log("you forgot to fill in your name");
-      formValid = false;
-
-    } else {
-      console.log('name input valid');
-    }
-
-    // regExp for checking email input
-      // taken from MDN articler on form validation
-        // - modified to return a match ONLY IF all three parts of email address are present
-          // an alias (to left of @, the @ itself, any kind of domain name, and something following a '.'  )
-            // however, not actually checking for real top-level domain like .com., org, .edu, .gov, etc...
-    const emailFilter = /^[[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)]*$/;
-
-    // check for email input then for valid email input
-
-    if (!signUpRegistration.mail) {
-      // show appropriate msg
-      errMsg.emailBlankErr = true;
-      console.log("you forgot to fill in your email address");
-      formValid = false;
-
-    } else if (!signUpRegistration.mail.match(emailFilter)){
-      // show appropriate msg
-      errMsg.emailFormatInvalid = true;
-      console.log("we need a valid email address to verify your registration");
-      formValid = false;
-
-    } else {
-      console.log('email input valid');
-    }
-
-
-    // check for valid shirt selection
-    if (!signUpRegistration.shirtDesign) {
-      // show appropriate msg
-      errMsg.noShirtSelectionErr = true;
-      console.log("don't forget to select your shirt design, size and color");
-      formValid = false;
-    } else {
-      console.log('shirt selection valid');
-    }
-
-    // check for selection of activities
-    if (!signUpRegistration.activities){
-      errMsg.activitesErr = true;
-      console.log('no activities selected');
-      formValid = false;
-    } else {
-      console.log('activities input valid');
-    }
-
-
-    // regExp filters for checking cc payment input
-    const atLeast13numbersFilter = /[0-9]{13}/;
-    const atLeast16numbersFilter = /[0-9]{16}/;
-    const zipCodeFilter = /[0-9]{5}/;
-    const cvvFilter = /[0-9]{3}/;
-
-    // checking for valid payment type selection
-    if (signUpRegistration.paymentInfo.type === 'select_method'){
-      errMsg.noPaymentTypeErr = true;
-      console.log('please select a payment type')
-    } else {
-      console.log('payment type valid');
-    }
-
-    // if credit card payment type = credit card, then check for valid cc payment info
-    if (document.getElementById('credit-card') !== null){
-
-      // check for valid cc number
-      if ( parseInt(signUpRegistration.paymentInfo.ccNum).toString() === 'NaN'){
-        errMsg.ccNumErr = true;
-        console.log('credit card number must be numbers only, at least 13 or at least 16 digits');
-      } else if (parseInt(parseInt(signUpRegistration.paymentInfo.ccNum).toString().length < 13 || signUpRegistration.paymentInfo.ccNum).toString().length < 16){
-        errMsg.ccNumErr = true;
-        console.log("please fill out a valid credit card number")
-        formValid = false;
+        // check for valid name input
+         // regExp for checking proper noun input
+          // probably will not need to check format of name input, i.e. Pronoun-like format,
+           // but just in case, keeping this regExp
+            // const nameFilter = /[A-Z][A-Za-z' -]+/;
+             // for now, just checking that something was typed in this field
+      if (!signUpRegistration.name) {
+        // if name field blank, set nameErr to true
+        this.errMsg.nameErr = true;
+        this.inValidReqFields += 1;
       } else {
-        console.log('Credit Card num input valid');
+        // else nameErr is false
+        this.errMsg.nameErr = false;
+        this.inValidReqFields -= 1;
       }
+      // if there is invalid input, display err msgs
+      // or remove err msgs if needed
+      this.inValidInputDisplayErrMsg();
+    }, // end verifyName
+    verifyEmail:function(signUpRegistration){
 
-      // check for valid zipcode
-      if ( parseInt(signUpRegistration.paymentInfo.zipCode).toString() === 'NaN'){
-       errMsg.zipCodeErr = true;
-       console.log('zip code must be 5 digits, numbers only');
-      } else if ( parseInt(signUpRegistration.paymentInfo.zipCode).toString().length != 5 ){
-        errMsg.zipCodeErr = true;
-        console.log("please fill out the zip code associated with your credit card");
-        formValid = false;
+      // regExp for checking email input
+        // taken from MDN articler on form validation
+          // - modified to return a match ONLY IF all three parts of email address are present
+            // an alias (to left of @, the @ itself, any kind of domain name, and something following a '.'  )
+              // however, not actually checking for real top-level domain like .com., org, .edu, .gov, etc...
+      const emailFilter = /^[[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)]*$/;
+
+      // check for email input then for valid email input
+
+      if (!signUpRegistration.mail) {
+        // if email field is blank, set emailBlankErr to true
+        this.errMsg.emailBlankErr = true;
+        this.inValidReqFields += 1;
       } else {
-        console.log('Zipcode input valid');
+        // else emailBlankErr is false
+        this.errMsg.emailBlankErr = false;
+        this.inValidReqFields -= 1;
+
+        if (!signUpRegistration.mail.match(emailFilter)){
+          // if email input is not valid format, emailFormatInvalid is true
+          this.errMsg.emailFormatInvalid = true;
+          this.inValidReqFields += 1;
+        } else {
+          // else emailFormatInvalid is false
+          this.errMsg.emailFormatInvalid = false;
+          this.inValidReqFields -= 1;
+        }
       }
+      // if there is invalid input, display err msgs
+      // or remove err msgs if needed
+      this.inValidInputDisplayErrMsg();
+    }, // end verifyEmail
+    verifyShirtSelection:function(signUpRegistration){
 
-      // check for valid CVV code
-      if ( parseInt(signUpRegistration.paymentInfo.cvv).toString() === 'NaN'){
-       errMsg.cvvErr = true;
-       console.log('cvv must be 3 digits, numbers only');
-      } else if ( parseInt(signUpRegistration.paymentInfo.cvv).toString().length != 3){
-        errMsg.cvvErr = true;
-        console.log("please fill out the cvv number");
-        formValid = false;
-      } else {
-        console.log('Credit Card CVV info input valid');
-      }
-    } // end if payment type = credit card
-    displayFormErrMsg(errMsg);
-    return formValid;
+        // check for valid shirt selection
+        if (!signUpRegistration.shirtDesign) {
+          // if no selection, err is true
+          this.errMsg.noShirtSelectionErr = true;
+          this.inValidReqFields += 1;
+        } else {
+          // else if there is selection, err is false
+          this.errMsg.noShirtSelectionErr = false;
+          this.inValidReqFields -= 1;
+        }
+        // if there is invalid input, display err msgs
+        // or remove err msgs if needed
+        this.inValidInputDisplayErrMsg();
+     },
+     verifyActivities:function(signUpRegistration){
+        // check for selection of activities
+        if (!signUpRegistration.activities || signUpRegistration.totalCost === 0){
+          this.errMsg.activitesErr = true;
+          this.inValidReqFields += 1;
+        } else {
+          // if an activity selected, err is false
+          this.errMsg.activitesErr = false;
+          this.inValidReqFields -= 1;
+        }
+        // if there is invalid input, display err msgs
+        // or remove err msgs if needed
+        this.inValidInputDisplayErrMsg();
+    }, // end verifyActivities
+    verifyPaymentInfo:function(signUpRegistration){
+        // regExp filters for checking cc payment input
+        const atLeast13numbersFilter = /[0-9]{13}/;
+        const atLeast16numbersFilter = /[0-9]{16}/;
+        const zipCodeFilter = /[0-9]{5}/;
+        const cvvFilter = /[0-9]{3}/;
 
-    // else if (signUpRegistration.paymentInfo.ccNum.match(signUpRegistration.paymentInfo.ccNum).length !== 1 || signUpRegistration.paymentInfo.ccNum.match(atLeast16numbersFilter).length !== 1 ) {
-    //   console.log("please fill out a valid credit card number");
-    //   formValid = false;
-    // }
+        // checking for valid payment type selection
+        if (signUpRegistration.paymentInfo.type === 'select_method'){
+          this.errMsg.noPaymentTypeErr = true; // no type selected
+          this.inValidReqFields += 1;
+        } else {
+          this.errMsg.noPaymentTypeErr = false; // there is type selected
+          this.inValidReqFields -= 1;
+        }
 
-  }; //end form validation function
+        // if credit card payment type = credit card, then check for valid cc payment info
+        if (document.getElementById('credit-card') !== null){
+
+          getCCPaymentInfo();
+
+          // check for valid cc number
+          if ( parseInt(signUpRegistration.paymentInfo.ccNum).toString() === 'NaN'){
+            this.errMsg.ccNumErr = true; // if not a Number, err is true
+            this.inValidReqFields += 1;
+          } else if (parseInt(parseInt(signUpRegistration.paymentInfo.ccNum).toString().length < 13 || signUpRegistration.paymentInfo.ccNum).toString().length > 16){
+            this.errMsg.ccNumErr = true; // if not correct length, err is true
+            this.inValidReqFields += 1;
+          } else {
+            this.errMsg.ccNumErr = false; // else no err
+            this.inValidReqFields -= 1;
+          }
+
+          // check for valid zipcode
+          if ( parseInt(signUpRegistration.paymentInfo.zip).toString() === 'NaN'){
+            this.errMsg.zipCodeErr = true; // if not a Number, err is true
+            this.inValidReqFields += 1;
+          } else if ( parseInt(signUpRegistration.paymentInfo.zip).toString().length !== 5 ){
+            this.errMsg.zipCodeErr = true; // if not correct length, err is true
+            this.inValidReqFields += 1;
+          } else {
+            this.errMsg.zipCodeErr = false; // else no err
+            this.inValidReqFields -= 1;
+          }
+
+          // check for valid CVV code
+          if ( parseInt(signUpRegistration.paymentInfo.cvv).toString() === 'NaN'){
+            this.errMsg.cvvErr = true; // if not a Number, err is true
+            this.inValidReqFields += 1;
+          } else if ( parseInt(signUpRegistration.paymentInfo.cvv).toString().length != 3){
+            this.errMsg.cvvErr = true; // if not correct length, err is true
+            this.inValidReqFields += 1;
+          } else {
+            this.errMsg.cvvErr = false; // else no err
+            this.inValidReqFields -= 1;
+          }
+
+        } // end if payment type = credit card
+
+        // if there is invalid input, display err msgs
+        this.inValidInputDisplayErrMsg();
+    }, // end verifyPaymentInfo
+    verifyAllRequiredFields:function(signUpRegistration){
+      this.verifyName(signUpRegistration);
+      this.verifyEmail(signUpRegistration);
+      this.verifyActivities(signUpRegistration);
+      this.verifyShirtSelection(signUpRegistration);
+      this.verifyPaymentInfo(signUpRegistration);
+    }, // end verifyAllRequiredFields
+    inValidInputDisplayErrMsg:function(){
+        displayFormErrMsg(this.errMsg);
+    } // end inValidInputDisplayErrMsg
+
+  }; //end form validation object
 
 
 // EVENT LISTENERS ----------------------------
 
   // event listener for name field input
-    $('#name').change(function(){
+    $('#name').focusout(function(e){
       signUpRegistration.name = document.getElementById('name').value;
     });
 
   // event listener for email field input
-    $('#mail').change(function(){
+    $('#mail').focusout(function(e){
       signUpRegistration.mail = document.getElementById('mail').value;
+      formValidation.verifyEmail(signUpRegistration);
     });
 
   // event listener for job title select value change
     // if job title changed to 'other' display other Job Role input field
-    $('#title').change(function() {
-
+    $('#title').focusout(function(e){
      if ($(this).val() === 'other') {
           document.getElementById('title').parentNode.append(otherJobRoleInput);
           otherJobTitleSelected = true;
@@ -513,7 +545,7 @@ $(document).ready(function() {
 
   // event listener for change in shirt design value
     // displaying only shirt colors that go with Shirt design theme
-    $('#design').change(function() {
+    $('#design').focusout(function(e){
       $('#design option:selected').each(function(){
         if ($(this).val() === 'heart js') {
           displayColorOptGroups( $colorOptions, $(this).val() );
@@ -527,7 +559,7 @@ $(document).ready(function() {
 
   // event listener for shirt color value
     // capture shirt size, design and color
-    $('#color').change(function(){
+    $('#color').focusout(function(e){
       signUpRegistration.shirtSize = document.getElementById('size').value;
       signUpRegistration.shirtDesign = document.getElementById('design').value;
       signUpRegistration.shirtColor = document.getElementById('color').value;
@@ -536,7 +568,7 @@ $(document).ready(function() {
   // forEach activity label function
     // set up eventlistener for each activity input
       // when an activity input is selected, capture, filter out activity details
-    document.querySelectorAll('.activities input').forEach(function(item, index){
+   document.querySelectorAll('.activities input').forEach(function(item, index){
 
       // used to track selected activiies,
         // scoped to activities label input function
@@ -642,30 +674,33 @@ $(document).ready(function() {
           signUpRegistration.totalCost = totalAmt;
           signUpRegistration.activities = selectedActivities;
 
-      }); // end activities input eventlistener
+          formValidation.verifyActivities(signUpRegistration);
 
+      }); // end activities input eventlistener
 
     }); // end activiies label for each function
 
   // event listener for change in shirt design value
     // displaying only shirt colors that go with Shirt design theme
-    $('#payment').change(function() {
+  $('#payment').change(function() {
 
-    // move current payment methods back to paymentOptions html collection node
-      paymentOptions.append( $('#payment').parent().children()[3] );
+      // move current payment methods back to paymentOptions html collection node
+        paymentOptions.append( $('#payment').parent().children()[3] );
 
-    // display selected payment options
-      displayPaymentOptions( $(this).val() );
+      // display selected payment options
+        displayPaymentOptions( $(this).val() );
 
-    // capture payment choice
-      signUpRegistration.paymentInfo.type = $(this).val();
+      // capture payment choice
+        signUpRegistration.paymentInfo.type = $(this).val();
 
-    // only get CC payment info IF payment type = credit card
-    if (signUpRegistration.paymentInfo.type === "credit card"){
-      getCCPaymentInfo();
-     }
+      // only get CC payment info IF payment type = credit card
+        if (signUpRegistration.paymentInfo.type === "credit card"){
+          getCCPaymentInfo();
+        }
 
-  }); // end #payment addEventListener
+      formValidation.verifyPaymentInfo(signUpRegistration);
+
+   }); // end #payment addEventListener
 
 // Function calls
   // move payment options to paymentOptions html node
@@ -681,16 +716,10 @@ $(document).ready(function() {
     focusOnFirstField($nameInput);
 
 // FORM SUBMIT
-// triggers anonymous form submit action
-   document.getElementsByTagName('form')[0].addEventListener('click', function(e){
-
+   $('form').submit(function(e){
      e.preventDefault();
+     // if there is any invalid input, prevent form submit
+     formValidation.verifyAllRequiredFields(signUpRegistration);
+   }); // end form submit eventlistener
 
-     // only sumbit if formValidation funciton returns TRUE
-     let allInputValid = formValidation(signUpRegistration);
-
-   });
-
-
-
-});
+}); // end document ready function
