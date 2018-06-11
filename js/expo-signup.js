@@ -106,6 +106,10 @@ $(document).ready(function() {
         }
       }); // end $()each
 
+      // hide shirt color label and drop-down menu
+      $('#color').hide();
+      document.getElementById('color').previousElementSibling.style='display:none;';
+
   }; // end getOptElements function
 
   // function to add shirt color optGroups to #color <select> element
@@ -552,12 +556,16 @@ $(document).ready(function() {
 
   // event listener for change in shirt design value
     // displaying only shirt colors that go with Shirt design theme
-    $('#design').focusout(function(e){
+    $('#design').change(function(e){
       $('#design option:selected').each(function(){
         if ($(this).val() === 'heart js') {
           displayColorOptGroups( $colorOptions, $(this).val() );
+          document.getElementById('color').previousElementSibling.removeAttribute('style','display:none;');
+          $('#color').show();
         } else if ($(this).val() === 'js puns') {
           displayColorOptGroups( $colorOptions, $(this).val() );
+          document.getElementById('color').previousElementSibling.removeAttribute('style','display:none;');
+          $('#color').show();
         } else {
           displayColorOptGroups( $colorOptions, 'notheme' );
         }  // end if ('js puns')
