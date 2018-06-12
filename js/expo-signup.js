@@ -3,15 +3,15 @@ $(document).ready(function() {
 
 // CONSTANT variables ------------------------------
 
-  // remove other-title job role input until selected
+  // remove static #other-title job role input 
   $('#other-title').remove('*')
 
-  // disable select theme (for shirts) option
+  // disable 'select theme' option (for shirts), so serves only as a label
   $('#design').children()[0].disabled = true;
-  // disable select payment type option
+  // disable select payment type option, so it also serves only as a label
   $('#payment').children()[0].disabled = true;
 
-  // array for tracking input for all signup form fields
+  // array for tracking input for all form input fields and selected options
   const signUpRegistration = [];
   signUpRegistration.paymentInfo = {};
 
