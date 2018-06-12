@@ -331,22 +331,22 @@ $(document).ready(function() {
     if (errMsg.ccNumErr){
       $('#ccNum-ErrMsg')[0].textContent = 'invalid credit-card num';
       // err msg for credit-card num input field
-    } else {
-      $('#ccNum-ErrMsg').textContent = '';
+    } else if ( document.getElementById('ccNum-ErrMsg') !== null ){
+      document.getElementById('ccNum-ErrMsg').textContent = '';
     }
 
     if (errMsg.zipCodeErr){
       $('#zipCode-ErrMsg')[0].textContent = 'invalid zip code';
       // err msg for zipCode input field
-    } else {
-      $('#zipCode-ErrMsg').textContent = '';
+    } else if ( document.getElementById('zipCode-ErrMsg') !== null ){
+      document.getElementById('zipCode-ErrMsg').textContent = '';
     }
 
     if (errMsg.cvvErr){
       $('#cvv-ErrMsg')[0].textContent = 'invalid cvv';
       // err msg for cvv input field
-    } else {
-      $('#cvv-ErrMsg').textContent = '';
+    } else if ( document.getElementById('cvv-ErrMsg') !== null ){
+      document.getElementById('cvv-ErrMsg').textContent = '';
     }
 
   } // end displayFormErrMsg function
