@@ -3,7 +3,10 @@ $(document).ready(function() {
 
 // CONSTANT variables ------------------------------
 
-  // remove static #other-title job role input 
+  // disable html's built in form Validation
+  $('form').attr('novalidate', "novalidate");
+
+  // remove static #other-title job role input
   $('#other-title').remove('*')
 
   // disable 'select theme' option (for shirts), so serves only as a label
