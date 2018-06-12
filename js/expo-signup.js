@@ -3,6 +3,14 @@ $(document).ready(function() {
 
 // CONSTANT variables ------------------------------
 
+  // remove other-title job role input until selected
+  $('#other-title').remove('*')
+
+  // disable select theme (for shirts) option
+  $('#design').children()[0].disabled = true;
+  // disable select payment type option
+  $('#payment').children()[0].disabled = true;
+
   // array for tracking input for all signup form fields
   const signUpRegistration = [];
   signUpRegistration.paymentInfo = {};
@@ -180,7 +188,6 @@ $(document).ready(function() {
       paymentOptions.append(paymentFieldset[3]);
     });
 
-    //$('#payment').parent().children().append( paymentOptions.children.namedItem('credit-card') );
     $('#payment').parent().children()[2].value = "credit card";
     displayPaymentOptions("credit card");
     signUpRegistration.paymentInfo.type = "credit card";
@@ -299,55 +306,60 @@ $(document).ready(function() {
     }
 
     // select Payment Info fieldset
-    paymentInfoFieldset = document.getElementById('payment').parentNode.children;
+    paymentInfoFieldset = document.getElementById('payment').parentNode;
      // add err msg for no payment selected
     if (errMsg.noPaymentTypeErr && document.getElementById('paymentType-ErrMsg') === null) {
       const paymntTypeErrMsgText = 'Please select a payment type';
       const paymentTypeErrMsgElement = buildErrMsgElement(paymntTypeErrMsgText);
       paymentTypeErrMsgElement.setAttribute('id', 'paymentType-ErrMsg')
-      paymentFieldset.append();
+      paymentInfoFieldset.append(paymentTypeErrMsgElement);
     } else if (!errMsg.noPaymentTypeErr && document.getElementById('paymentType-ErrMsg') !== null ){
       // remove err msg
       document.getElementById('paymentType-ErrMsg').remove('*');
     } // end display form err msgs
 
     // select activites Fieldset
-    const creditCardFieldSet = document.getElementsByClassName('credit-card')[0];
+    if (document.getElementsByClassName('credit-card')[0] !== null ){
 
-    // CCerrInfoDiv created above, has a set width and hieght
-    // contains 3 child div elements, for each field of credit card info
-    // child div contains a paragragh element with set width
+      const creditCardDiv = document.getElementsByClassName('credit-card')[0];
+      // CCerrInfoDiv created above, has a set width and hieght
+      // contains 3 child div elements, for each field of credit card info
+      // child div contains a paragragh element with set width
 
-    if (errMsg.ccNumErr || errMsg.zipCodeErr || errMsg.cvvErr && document.getElementById('CCerrInfoDiv') === null) {
-      // if any errors on Credit Card input, add credit card err msg Div to html Page
-      creditCardFieldSet.insertBefore(CCerrInfoDiv, document.getElementsByClassName('credit-card')[0].children[3] );
-    } else if ( document.getElementById('CCerrInfoDiv') !== null ) {
-      $('#CCerrInfoDiv').remove('*');
-    // if no credit card input field errors, remove the CCerrInfoDiv
-    }
+      if (errMsg.ccNumErr || errMsg.zipCodeErr || errMsg.cvvErr && document.getElementById('CCerrInfoDiv') === null) {
+        // if any errors on Credit Card input, add credit card err msg Div to html Page
+        creditCardDiv.insertBefore(CCerrInfoDiv, creditCardDiv.children[3] );
+      } else if ( document.getElementById('CCerrInfoDiv') !== null ) {
+        $('#CCerrInfoDiv').remove('*');
+      // if no credit card input field errors, remove the CCerrInfoDiv
+      }
 
-    // now, simply add/remove the textContent to/from err msg pgh elements as needed
+      // now, simply add/remove the textContent to/from err msg pgh elements as needed
 
-    if (errMsg.ccNumErr){
-      $('#ccNum-ErrMsg')[0].textContent = 'invalid credit-card num';
-      // err msg for credit-card num input field
-    } else if ( document.getElementById('ccNum-ErrMsg') !== null ){
-      document.getElementById('ccNum-ErrMsg').textContent = '';
-    }
+      if (errMsg.ccNumErr){
+        $('#ccNum-ErrMsg')[0].textContent = 'invalid credit-card num';
+        // err msg for credit-card num input field
+      } else if ( document.getElementById('ccNum-ErrMsg') !== null ){
+        document.getElementById('ccNum-ErrMsg').textContent = '';
+      }
 
-    if (errMsg.zipCodeErr){
-      $('#zipCode-ErrMsg')[0].textContent = 'invalid zip code';
-      // err msg for zipCode input field
-    } else if ( document.getElementById('zipCode-ErrMsg') !== null ){
-      document.getElementById('zipCode-ErrMsg').textContent = '';
-    }
+      if (errMsg.zipCodeErr){
+        $('#zipCode-ErrMsg')[0].textContent = 'invalid zip code';
+        // err msg for zipCode input field
+      } else if ( document.getElementById('zipCode-ErrMsg') !== null ){
+        document.getElementById('zipCode-ErrMsg').textContent = '';
+      }
 
-    if (errMsg.cvvErr){
-      $('#cvv-ErrMsg')[0].textContent = 'invalid cvv';
-      // err msg for cvv input field
-    } else if ( document.getElementById('cvv-ErrMsg') !== null ){
-      document.getElementById('cvv-ErrMsg').textContent = '';
-    }
+      if (errMsg.cvvErr){
+        $('#cvv-ErrMsg')[0].textContent = 'invalid cvv';
+        // err msg for cvv input field
+      } else if ( document.getElementById('cvv-ErrMsg') !== null ){
+        document.getElementById('cvv-ErrMsg').textContent = '';
+      }
+
+    };
+
+
 
   } // end displayFormErrMsg function
 
@@ -532,6 +544,7 @@ $(document).ready(function() {
   // event listener for name field input
     $('#name').focusout(function(e){
       signUpRegistration.name = document.getElementById('name').value;
+      formValidation.verifyName(signUpRegistration);
     });
 
   // event listener for email field input
@@ -579,7 +592,7 @@ $(document).ready(function() {
 
   // event listener for shirt color value
     // capture shirt size, design and color
-    $('#color').change(function(e){
+    $('#color').focusin(function(e){
       signUpRegistration.shirtSize = document.getElementById('size').value;
       signUpRegistration.shirtDesign = document.getElementById('design').value;
       signUpRegistration.shirtColor = document.getElementById('color').value;
@@ -717,6 +730,10 @@ $(document).ready(function() {
       // only get CC payment info IF payment type = credit card
         if (signUpRegistration.paymentInfo.type === "credit card"){
           getCCPaymentInfo();
+        } else {
+          formValidation.errMsg.ccNumErr = false;
+          formValidation.errMsg.zipCodeErr = false;
+          formValidation.errMsg.cvvErr = false;
         }
 
       formValidation.verifyPaymentInfo(signUpRegistration);
