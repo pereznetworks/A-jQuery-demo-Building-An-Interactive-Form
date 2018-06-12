@@ -433,10 +433,9 @@ $(document).ready(function() {
     }, // end verifyActivities
     verifyPaymentInfo:function(signUpRegistration){
         // regExp filters for checking cc payment input
-        const atLeast13numbersFilter = /[0-9]{13}/;
-        const atLeast16numbersFilter = /[0-9]{16}/;
-        const zipCodeFilter = /[0-9]{5}/;
-        const cvvFilter = /[0-9]{3}/;
+        const atLeast13atmost16Filter = /^[0-9]{13,16}$/;
+        const zipCodeFilter = /^[0-9]{5}$/;
+        const cvvFilter = /^[0-9]{3}$/;
 
         // checking for valid payment type selection
         if (signUpRegistration.paymentInfo.type === 'select_method'){
@@ -451,9 +450,11 @@ $(document).ready(function() {
           getCCPaymentInfo();
 
           // check for valid cc number
+
           if ( parseInt(signUpRegistration.paymentInfo.ccNum).toString() === 'NaN'){
             this.errMsg.ccNumErr = true; // if not a Number, err is true
-          } else if (parseInt(parseInt(signUpRegistration.paymentInfo.ccNum).toString().length < 13 || signUpRegistration.paymentInfo.ccNum).toString().length > 16){
+            // parseInt(parseInt(signUpRegistration.paymentInfo.ccNum).toString().length < 13 || signUpRegistration.paymentInfo.ccNum).toString().length > 16
+          } else if ( signUpRegistration.paymentInfo.ccNum.match(atLeast13atmost16Filter) === null){
             this.errMsg.ccNumErr = true; // if not correct length, err is true
           } else {
             this.errMsg.ccNumErr = false; // else no err
@@ -462,7 +463,8 @@ $(document).ready(function() {
           // check for valid zipcode
           if ( parseInt(signUpRegistration.paymentInfo.zip).toString() === 'NaN'){
             this.errMsg.zipCodeErr = true; // if not a Number, err is true
-          } else if ( parseInt(signUpRegistration.paymentInfo.zip).toString().length !== 5 ){
+            // parseInt(signUpRegistration.paymentInfo.zip).toString().length !== 5
+          } else if ( signUpRegistration.paymentInfo.zip.match(zipCodeFilter) === null ){
             this.errMsg.zipCodeErr = true; // if not correct length, err is true
           } else {
             this.errMsg.zipCodeErr = false; // else no err
@@ -471,7 +473,8 @@ $(document).ready(function() {
           // check for valid CVV code
           if ( parseInt(signUpRegistration.paymentInfo.cvv).toString() === 'NaN'){
             this.errMsg.cvvErr = true; // if not a Number, err is true
-          } else if ( parseInt(signUpRegistration.paymentInfo.cvv).toString().length != 3){
+            // parseInt(signUpRegistration.paymentInfo.cvv).toString().length != 3
+          } else if ( signUpRegistration.paymentInfo.cvv.match(cvvFilter) === null ){
             this.errMsg.cvvErr = true; // if not correct length, err is true
           } else {
             this.errMsg.cvvErr = false; // else no err
