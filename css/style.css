@@ -168,13 +168,19 @@ label[disabled="true"] {
   Form Validation Error Message element styles
 ==================================== */
 
-#nameBlankErrElmnt, #emailBlankMsgElmnt, #emailInvalidMsgElmnt, #noShirtErrMsg, #noActErrMsgElmnt {
-  color:red;
+#nameBlankErrElmnt, #noShirtErrMsg, #noActErrMsgElmnt {
+  color:brown;
+  padding-bottom:.8em;
+}
+
+#emailBlankMsgElmnt, #emailInvalidMsgElmnt{
+  color:brown;
+  padding-top:.8em;
   padding-bottom:.8em;
 }
 
 #noShirtErrMsg{
-  color:red;
+  color:brown;
   padding-bottom:.8em;
   float:left;
   display:block;
@@ -199,7 +205,7 @@ label[disabled="true"] {
 
 #ccNum-ErrMsg, #zipCode-ErrMsg, #cvv-ErrMsg {
   text-align:right;
-  color:red;
+  color:brown;
   margin: 0 .5em .5em .5em;
 }
 /* =================================

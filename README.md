@@ -8,32 +8,32 @@
       exceeds :
                 all 3 exceeds features completed and documented below by form section.
                 the email input field gets conditional error messages.
-                the name, email input field and activity fieldset get real-time error msgs
+                the email input field also gets real-time error msgs
 
       html:
-                An input element, id of 'other-title', 
+                An input element, id of 'other-title',
                     placeholder of 'Your Job Role' is added to the index.html.  
 
       css:          
                 I added styles for form validation error message elements
-                
+
       javaScript:
                 the file, exp-signup.js, contains all my JavaScript for this project.
                 using code comments I separated it into 3 sections:
                   // Constant variables, // Functions // Event Listeners
-                  
-                the code should be commented fairly well 
-                I'll go over the client-side signUpRegistration array and formValidation objects 
+
+                the code should be commented fairly well
+                I'll go over the client-side signUpRegistration array and formValidation objects
                 as well as meets and exceeds expectations requirements below
 
 # client-side form data and validation  
 
     signUpRegistration array:
 
-        As text is entered into input fields and selector choices are made, 
+        As text is entered into input fields and selector choices are made,
            these are read as object/key values into the signUpRegistration array.
 
-        The credit-card input fields and expiration date and year data 
+        The credit-card input fields and expiration date and year data
            are read into the signUpRegistration.paymentInfo array
 
     formValidation object and object methods:
@@ -43,8 +43,8 @@
         The signUpRegistration array values are read by the formValidation object methods.
           Any errors are tracked to a formValidation object
 
-        The $('Name').change event, 
-        the $('mail').change event 
+        The $('Name').change event,
+        the $('mail').change event
         and the $('.activities input') click event...
           call their respective formValidation object methods for real-time formValidation.
 
@@ -52,46 +52,45 @@
 
      displayFormErrMsg function:  
 
-        Is called by the formValidation object methods. 
+        Is called by the formValidation object methods.
           formValidation error objects are name after specific errors
              i.e., emailBlankErr, invalidEmailFormat
-                thewse are tested for true or false 
+                these are tested for true or false
            displays appropriate errors under the appropriate input field or selector
 
-      on Submit, a formValidation.inValidReqFields value is tested if 0, 
+      on Submit, a formValidation.inValidReqFields value is tested if 0,
          if not 0, the form is not submitted and the errors are displayed.
 
       for this project, the submit action of the form simply resets the form.
 
 # Basic Info
 
-    Entire form, all input fields, t-shirt color drop-down menu choices, 
-        including the 'other-title' job role input field, 
+    Entire form, all input fields, t-shirt color drop-down menu choices,
+        including the 'other-title' job role input field,
         are available and/or displayed when JavaScript is disabled.
 
     1:  Name input field, gets focus when the page first loads
 
         form validation:
               on submit, verifies name input is not blank
-              red text error msg appears when name input is blank
-
-        exceeds: real-time error message
-              if no text is entered into the name field a red text error appears, right away.
-              the error goes away once text is entered into the name field
+              brown text error msg appears when name input is blank
 
     2:  Email input field
 
         form validation:
-              on submit, email format is verified to contain all three sections 
+              on submit, email format is verified to contain all three sections
                 alias@somedomain.com, org, edu, etc..
-              a red text error message appears if email input is blank or is not properly formatted
+              a brown text error message appears if email input is blank or is not properly formatted
 
         exceeds:  
-              conditional & real-time error messages:
+              conditional error messages:
+              on submit,
               a 'blank' error msg appears when email input in blank
-              an 'invalid format' error msg appears when the email is not properly formatted
-              the conditional error messages appears right away
-                as soon as user hits enter or the email input field loses focus
+              an 'oops, invalid format' error msg appears when the email input is not properly formatted
+              the conditional error messages
+
+              real-time error message, as the user types in the email input field
+              a "checking for valid email address format" appears
               the error goes away once the email input is valid
 
     3:  Job Role Selection
@@ -102,16 +101,16 @@
 
 # T-Shirt selection
 
-        when selecting t-shirt design and color, 
+        when selecting t-shirt design and color,
            shows only the t-shirt colors available with that design theme
 
-        the option 'Select Theme' is disabled 
+        the option 'Select Theme' is disabled
            so it serves only as a label, and is not selectable
 
         all t-shirt colors are available when JavaScript is disabled
 
         form validation:
-              on submit, an error appears when 
+              on submit, an error appears when
                 no t-shirt size, design theme or color is selected
 
         exceeds:  hidden drop-down menu
@@ -120,28 +119,23 @@
 
 # Activities
 
-        a total cost, 'Total: $600', of selected activities 
+        a total cost, 'Total: $600', of selected activities
            appears at the bottom of this section.
            the 'Total' is updated as activities are selected or deselected
 
-        As activities are selected, 
-            activities with conflicting schedules are 
+        As activities are selected,
+            activities with conflicting schedules are
               'disabled', greyed out and not selectable.
 
         form validation:
                 on submit, an error appears when no activities are selected
 
-        exceeds:  real-time error message
-                  once any activity is selected but then deselected, 
-                    and then no other activities are selected, 
-                      then an red text error appears
-                       once any activity is selected then the error disappears
 
 # Payment Info
 
         when the page loads
-           the credit-card payment type is selected 
-            and the credit-card input fields and Expiration date drop menu appear, 
+           the credit-card payment type is selected
+            and the credit-card input fields and Expiration date drop menu appear,
 
         as other payment options are chosen, only that payment type is displayed
 
@@ -155,7 +149,7 @@
                 cvv is verified to be 3 digits and numbers only
 
                 if above input requirements are not met
-                   a red text error appear directly under each field 
+                   a brown text error appear directly under each field
 
 # Exceeds:
 
@@ -166,21 +160,10 @@
       2: Condition Error messages
 
         the email input fields gets 2 different conditional error messages
-        a 'blank' error msg appears when email input in blank
+        a 'Oops, please, fill in your email address' error msg appears when email input in blank
         an 'invalid format' error msg appears when the email is not properly formatted
 
       3: Real-Time error messages
 
-        if blank or invalid format, 
-           the email input field conditional error messages appear right away,
-           only one error, appears at a time
-           as soon as the email input is corrected, the error disappears
-
-        the name input field and Activity fieldset also have real-time error messages.  
-
-        If the name input field is blank, an error appears right away. 
-            as soon as text is entered in the name input field the error disappears.
-
-        Once any activity is selected but then deselected, 
-           and no other activities are selected then an red text error appears. 
-           Once any activity is selected then the error disappears,
+        as the user types in the email field
+          a message appears, "checking for correctly formatted email address"

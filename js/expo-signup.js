@@ -92,9 +92,9 @@ $(document).ready(function() {
 // FUNCTIONS declarations-----------------------------------
 
   // function to put focus on the first form field, name, input field
-  const focusOnFirstField = function($node) {
+  const putfocusOn = function($node) {
     $node.focus();
-  }; // end focusOnFirstField function
+  }; // end putfocusOn function
 
   // function to move shirt color options under 2 const html node opt groups
   const getOptElements = function(){
@@ -238,10 +238,10 @@ $(document).ready(function() {
         const nameBlankErrElmnt = buildErrMsgElement(nameBlankMsg, 'nameBlankErrElmnt');
 
     // build error message for email input field
-        const emailBlankMsg = 'Please, fill in your email address';
+        const emailBlankMsg = 'Oops, please, fill in your email address';
         const emailBlankMsgElmnt = buildErrMsgElement(emailBlankMsg, 'emailBlankMsgElmnt');
 
-        const emailInvalidMsg = 'Oops, we need a valid email address to verify your registration';
+        const emailInvalidMsg = 'Oops we need an correctly formated email address...';
         const emailInvalidMsgElmnt = buildErrMsgElement(emailInvalidMsg, 'emailInvalidMsgElmnt');
 
     // select and build error message for t-shirt FieldSet
@@ -291,7 +291,6 @@ $(document).ready(function() {
 
     // add err msg for no T-Shirt selection
     if (errMsg.noShirtSelectionErr && document.getElementById('noShirtErrMsg') === null ){
-
       shirtFieldSet.append(noShirtErrMsgElmnt);
     } else if ( !errMsg.noShirtSelectionErr && document.getElementById('noShirtErrMsg') !== null ) {
       // remove err msg for Activities
@@ -300,7 +299,6 @@ $(document).ready(function() {
 
     // add err msg for no Activities selection
     if (errMsg.activitesErr && document.getElementById('noActErrMsgElmnt') === null){
-
       activitesFieldSet.append(noActErrMsgElmnt);
     } else if ( !errMsg.activitesErr && document.getElementById('noActErrMsgElmnt') !== null){
       // remove err msg for Activities
@@ -540,14 +538,26 @@ $(document).ready(function() {
     $('#name').focusout(function(e){
 
       signUpRegistration.name = document.getElementById('name').value;
-      formValidation.verifyName(signUpRegistration);
     });
 
   // event listener for email field input
-    $('#mail').focusout(function(e){
+    $('#mail').keyup(function(e){
+
+      const basicInfoFieldSet = document.getElementById('name').parentNode;
+      const titleLabel = document.getElementById('title').previousElementSibling;
+      const emailFilter = /^[[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)]*$/;
+      const checkingEmailformat = 'checking for valid email address format...';
+      const checkingEmailMsgElmnt = buildErrMsgElement(checkingEmailformat, 'emailInvalidMsgElmnt');
+
+      if ( !$('#mail')[0].value.match(emailFilter)  ) {
+        $('#emailInvalidMsgElmnt').remove('*');
+        basicInfoFieldSet.insertBefore(checkingEmailMsgElmnt, titleLabel);
+      } else {
+        $('#emailInvalidMsgElmnt').remove('*');
+        document.getElementById('mail').style = 'padding-bottom:.8em;';
+      }
 
       signUpRegistration.mail = document.getElementById('mail').value;
-      formValidation.verifyEmail(signUpRegistration);
     });
 
   // event listener for job title select value change
@@ -596,7 +606,7 @@ $(document).ready(function() {
       signUpRegistration.shirtSize = document.getElementById('size').value;
       signUpRegistration.shirtDesign = document.getElementById('design').value;
       signUpRegistration.shirtColor = document.getElementById('color').value;
-      formValidation.verifyShirtSelection(signUpRegistration);
+
     });
 
   // forEach activity label function
@@ -708,8 +718,6 @@ $(document).ready(function() {
           signUpRegistration.totalCost = totalAmt;
           signUpRegistration.activities = selectedActivities;
 
-          formValidation.verifyActivities(signUpRegistration);
-
       }); // end activities input eventlistener
 
     }); // end activiies label for each function
@@ -751,7 +759,7 @@ $(document).ready(function() {
     $colorOptions.append(blankOptGrp.children);
 
   // set focus on first element field
-    focusOnFirstField($nameInput);
+    putfocusOn($nameInput);
 
 // FORM SUBMIT
   $('form').submit(function(e){
