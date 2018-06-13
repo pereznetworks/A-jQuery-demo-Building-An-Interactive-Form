@@ -2,27 +2,28 @@
 
 # PROJECT 3 Summary
 
-	requirements:
-
+	    requirements:
                 all requirements completed and documented below by form section.
 
-  exceeds :
+      exceeds :
                 all 3 exceeds features completed and documented below by form section.
                 the email input field gets conditional error messages.
                 the name, email input field and activity fieldset get real-time error msgs
 
-  html:
+      html:
                 An input element, id of 'other-title', placeholder of 'Your Job Role' is added to the index.html.  No other changes to html or css were made.
 
-  css:          
+      css:          
                 I added styles for form validation error message elements
 
-javaScript:
+      javaScript:
                 the file, exp-signup.js, contains all my JavaScript for this project.
                 using code comments I separated it into 3 sections:
                   // Constant variables, // Functions // Event Listeners
 
-As for my JavaScript, I'll go over the client-side form data and validation objects and object methods.  
+# client-side form data and validation
+
+      As for my JavaScript, I'll go over the client-side form data and validation objects and object methods.  
 
       I use a lot of others functions and constant variables. These have documented these in the JavaScript itself.
 
