@@ -3,15 +3,17 @@ $(document).ready(function() {
 
 // CONSTANT variables ------------------------------
 
+  // copy static #other-title job role input field
+  const otherJobRoleInput = $('#other-title')[0];
+  // remove static #other-title job role input
+  $('#other-title').remove('*');
+
   // disable html's built in form Validation
   $('form').attr('novalidate', "novalidate");
 
-  // remove static #other-title job role input
-  $('#other-title').remove('*')
-
   // disable 'select theme' option (for shirts), so serves only as a label
   $('#design').children()[0].disabled = true;
-  // disable select payment type option, so it also serves only as a label
+  // disable option 'select-payment', so it also serves only as a label
   $('#payment').children()[0].disabled = true;
 
   // array for tracking input for all form input fields and selected options
@@ -28,11 +30,6 @@ $(document).ready(function() {
   const $colorOptions = $('#color');
 
   let otherJobTitleSelected = false;
-  // build other Job Role input field
-  const otherJobRoleInput = document.createElement("input");
-  otherJobRoleInput.type = "text";
-  otherJobRoleInput.id = "other-title";
-  otherJobRoleInput.placeholder = "Your Job Role";
 
   // build shirt color opt groups
   const jsPunsOptGrp = document.createElement('optgroup');
@@ -59,31 +56,30 @@ $(document).ready(function() {
   // building credit card info err msg elements
       const CCerrInfoDiv = document.createElement('div');
       CCerrInfoDiv.setAttribute('id', 'CCerrInfoDiv');
-      CCerrInfoDiv.style='width:38em;height:10em;';
 
       const ccNumErrDiv = document.createElement('div');
       ccNumErrDiv.setAttribute('class', 'col-6 col');
-      ccNumErrDiv.style='width:19em;';
+      ccNumErrDiv.setAttribute('id', 'ccNumErrDiv');
+
       const ccNumPgh = document.createElement('p');
-      ccNumPgh.style = 'text-align:right;color:red;margin: 0 .5em .5em .5em;';
       ccNumPgh.setAttribute('id', 'ccNum-ErrMsg');
       ccNumPgh.textContent = '';
       ccNumErrDiv.append(ccNumPgh);
 
       const zipErrDiv = document.createElement('div');
       zipErrDiv.setAttribute('class', 'col-3 col');
-      zipErrDiv.style='width:9em;';
+      zipErrDiv.setAttribute('id', 'zipErrDiv');
+
       const zipPgh= document.createElement('p');
-      zipPgh.style = 'text-align:right;color:red;margin: 0 .5em .5em .5em;';
       zipPgh.setAttribute('id', 'zipCode-ErrMsg');
       zipPgh.textContent = '';
       zipErrDiv.append(zipPgh);
 
       const cvvErrDiv = document.createElement('div');
       cvvErrDiv.setAttribute('class', 'col-3 col');
-      cvvErrDiv.style='width:6em;';
+      cvvErrDiv.setAttribute('id', 'cvvErrDiv');
+
       const cvvPgh= document.createElement('p');
-      cvvPgh.style = 'text-align:right;color:red;margin: 0 .5em .5em .5em;';
       cvvPgh.setAttribute('id', 'cvv-ErrMsg');
       cvvPgh.textContent = '';
       cvvErrDiv.append(cvvPgh);
@@ -221,27 +217,45 @@ $(document).ready(function() {
 
   }; // end getCCPaymentInfo function
 
-  const buildErrMsgElement = function(errMsgText){
+  const buildErrMsgElement = function(errMsgText, idName){
     const errMsgElement = document.createElement('p');
-    errMsgElement.style = 'color:red;padding-bottom:.8em;'
-    errMsgElement.setAttribute('id', 'test');
+    errMsgElement.setAttribute('id', idName);
     errMsgElement.textContent = errMsgText;
     return errMsgElement;
   };
 
   const displayFormErrMsg = function(errMsg){
 
-    // select fieldset for name, email and job role fields
-    const basicInfoFieldSet = document.getElementById('name').parentNode;
+    // select fieldset for Basic Info section of form, parent of name input,
+        const basicInfoFieldSet = document.getElementById('name').parentNode;
+
+    // build error message for name input field
+        const nameBlankMsg = 'Please, fill in your name';
+        const nameBlankErrElmnt = buildErrMsgElement(nameBlankMsg, 'nameBlankErrElmnt');
+
+    // build error message for email input field
+        const emailBlankMsg = 'Please, fill in your email address';
+        const emailBlankMsgElmnt = buildErrMsgElement(emailBlankMsg, 'emailBlankMsgElmnt');
+
+        const emailInvalidMsg = 'Oops, we need a valid email address to verify your registration';
+        const emailInvalidMsgElmnt = buildErrMsgElement(emailInvalidMsg, 'emailInvalidMsgElmnt');
+
+    // select and build error message for t-shirt FieldSet
+        const shirtFieldSet = document.getElementsByClassName('shirt')[0];
+
+        const noShirtSelectionErrMsg = "Don't forget to choose a shirt size, design and color";
+        noShirtErrMsgElmnt = buildErrMsgElement(noShirtSelectionErrMsg, 'noShirtErrMsg');
+
+    // select and build eror message for activites Fieldset
+        const activitesFieldSet = document.getElementsByClassName('activities')[0];
+
+        const activitesErrMsg = 'Please choose from the activiies';
+        const noActErrMsgElmnt = buildErrMsgElement(activitesErrMsg, 'noActErrMsgElmnt');
 
     // add err msg for Name field
     if (errMsg.nameErr && document.getElementById('nameBlankErrElmnt') === null) {
       const emailLabel = basicInfoFieldSet.children[3];
-      const nameInputField = document.getElementById('name');
-      nameInputField.style = 'margin-bottom:0;';
-      const nameBlankMsg = 'Please, fill in your name';
-      const nameBlankErrElmnt = buildErrMsgElement(nameBlankMsg);
-      nameBlankErrElmnt.setAttribute('id', 'nameBlankErrElmnt');
+      document.getElementById('name').style = 'margin-bottom:0;';
       basicInfoFieldSet.insertBefore(nameBlankErrElmnt, emailLabel);
     } else if(!errMsg.nameErr && document.getElementById('nameBlankErrElmnt') !== null) {
       // remove err msg for Name field
@@ -251,12 +265,8 @@ $(document).ready(function() {
 
       // add err msg for Email field blank
     if (errMsg.emailBlankErr && document.getElementById('emailBlankMsgElmnt') === null) {
-      const emailInputField = document.getElementById('mail');
+      document.getElementById('mail').style = 'margin-bottom:0;';
       const titleLabel = document.getElementById('title').previousElementSibling;
-      emailInputField.style = 'margin-bottom:0;';
-      const emailBlankMsg = 'Please, fill in your email address';
-      const emailBlankMsgElmnt = buildErrMsgElement(emailBlankMsg);
-      emailBlankMsgElmnt.setAttribute('id', 'emailBlankMsgElmnt');
       basicInfoFieldSet.insertBefore(emailBlankMsgElmnt, titleLabel);
     } else if (!errMsg.emailBlankErr && document.getElementById('emailBlankMsgElmnt') !== null){
       // remove err msg for blank Email field
@@ -266,12 +276,8 @@ $(document).ready(function() {
 
     if (errMsg.emailFormatInvalid && document.getElementById('emailInvalidMsgElmnt') === null ) {
       // add err msg for Email input invalid
-      const emailInputField = document.getElementById('mail');
+      document.getElementById('mail').style = 'margin-bottom:0;';
       const titleLabel = document.getElementById('title').previousElementSibling;
-      emailInputField.style = 'margin-bottom:0;';
-      const emailInvalidMsg = 'Oops, we need a valid email address to verify your registration';
-      const emailInvalidMsgElmnt = buildErrMsgElement(emailInvalidMsg);
-      emailInvalidMsgElmnt.setAttribute('id', 'emailInvalidMsgElmnt');
       basicInfoFieldSet.insertBefore(emailInvalidMsgElmnt, titleLabel);
     } else if (!errMsg.emailFormatInvalid && document.getElementById('emailInvalidMsgElmnt') !== null ){
       // remove err msg for invalid Email field
@@ -279,49 +285,25 @@ $(document).ready(function() {
       document.getElementById('mail').style = 'padding-bottom:.8em;';
     }
 
-    // select activites FieldSet
-    const shirtFieldSet = document.getElementsByClassName('shirt')[0];
-
-    // add err msg for Activities
+    // add err msg for no T-Shirt selection
     if (errMsg.noShirtSelectionErr && document.getElementById('noShirtErrMsg') === null ){
-      const noShirtSelectionErrMsg = "Don't forget to choose a shirt size, design and color";
-      noShirtErrMsgElmnt = buildErrMsgElement(noShirtSelectionErrMsg);
-      noShirtErrMsgElmnt.setAttribute('id', 'noShirtErrMsg');
-      noShirtErrMsgElmnt.style = 'color:red;padding-bottom:.8em;float:left;display:block;width:100%';
+
       shirtFieldSet.append(noShirtErrMsgElmnt);
     } else if ( !errMsg.noShirtSelectionErr && document.getElementById('noShirtErrMsg') !== null ) {
       // remove err msg for Activities
       document.getElementById('noShirtErrMsg').remove('*');
     }
 
-    // select activites Fieldset
-    const activitesFieldSet = document.getElementsByClassName('activities')[0];
-
-    // add err msg for Activities
+    // add err msg for no Activities selection
     if (errMsg.activitesErr && document.getElementById('noActErrMsgElmnt') === null){
-      const activitesErrMsg = 'Please choose from the activiies';
-      const noActErrMsgElmnt = buildErrMsgElement(activitesErrMsg);
-      noActErrMsgElmnt.setAttribute('id', 'noActErrMsgElmnt');
+
       activitesFieldSet.append(noActErrMsgElmnt);
     } else if ( !errMsg.activitesErr && document.getElementById('noActErrMsgElmnt') !== null){
       // remove err msg for Activities
       document.getElementById('noActErrMsgElmnt').remove('*');
     }
 
-    // select Payment Info fieldset
-    paymentInfoFieldset = document.getElementById('payment').parentNode;
-     // add err msg for no payment selected
-    if (errMsg.noPaymentTypeErr && document.getElementById('paymentType-ErrMsg') === null) {
-      const paymntTypeErrMsgText = 'Please select a payment type';
-      const paymentTypeErrMsgElement = buildErrMsgElement(paymntTypeErrMsgText);
-      paymentTypeErrMsgElement.setAttribute('id', 'paymentType-ErrMsg')
-      paymentInfoFieldset.append(paymentTypeErrMsgElement);
-    } else if (!errMsg.noPaymentTypeErr && document.getElementById('paymentType-ErrMsg') !== null ){
-      // remove err msg
-      document.getElementById('paymentType-ErrMsg').remove('*');
-    } // end display form err msgs
-
-    // select activites Fieldset
+    // if the credit-card payment div is displayed on the page....
     if (document.getElementsByClassName('credit-card')[0] !== null ){
 
       const creditCardDiv = document.getElementsByClassName('credit-card')[0];
@@ -404,6 +386,8 @@ $(document).ready(function() {
       if (!signUpRegistration.mail) {
         // if email field is blank, set emailBlankErr to true
         this.errMsg.emailBlankErr = true;
+        // clear the other email error flag just in case
+        this.errMsg.emailFormatInvalid = false;
       } else {
         // else emailBlankErr is false
         this.errMsg.emailBlankErr = false;
@@ -411,6 +395,8 @@ $(document).ready(function() {
         if (!signUpRegistration.mail.match(emailFilter)){
           // if email input is not valid format, emailFormatInvalid is true
           this.errMsg.emailFormatInvalid = true;
+          // clear the other email error flag just in case
+          this.errMsg.emailBlankErr = false;
         } else {
           // else emailFormatInvalid is false
           this.errMsg.emailFormatInvalid = false;
@@ -451,13 +437,6 @@ $(document).ready(function() {
         const atLeast13atmost16Filter = /^[0-9]{13,16}$/;
         const zipCodeFilter = /^[0-9]{5}$/;
         const cvvFilter = /^[0-9]{3}$/;
-
-        // checking for valid payment type selection
-        if (signUpRegistration.paymentInfo.type === 'select_method'){
-          this.errMsg.noPaymentTypeErr = true; // no type selected
-        } else {
-          this.errMsg.noPaymentTypeErr = false; // there is type selected
-        }
 
         // if credit card payment type = credit card, then check for valid cc payment info
         if (document.getElementById('credit-card') !== null){

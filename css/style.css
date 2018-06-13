@@ -165,6 +165,44 @@ label[disabled="true"] {
 }
 
 /* =================================
+  Form Validation Error Message element styles
+==================================== */
+
+#nameBlankErrElmnt, #emailBlankMsgElmnt, #emailInvalidMsgElmnt, #noShirtErrMsg, #noActErrMsgElmnt {
+  color:red;
+  padding-bottom:.8em;
+}
+
+#noShirtErrMsg{
+  color:red;
+  padding-bottom:.8em;
+  float:left;
+  display:block;
+  width:100%
+}
+
+#CCerrInfoDiv {
+  width:38em;
+  height:10em;
+}
+#ccNumErrDiv {
+  width:19em;
+}
+
+#zipErrDiv {
+  width:9em;
+}
+
+#cvvErrDiv {
+  width:6em;
+}
+
+#ccNum-ErrMsg, #zipCode-ErrMsg, #cvv-ErrMsg {
+  text-align:right;
+  color:red;
+  margin: 0 .5em .5em .5em;
+}
+/* =================================
   Media Queries
 ==================================== */
 

@@ -1,8 +1,16 @@
+# PROJECT 3 STATUS
+
+	write up of project summary for README.MD
+
+	change styling of form validation error messages
+
+	re-factor for DRY?
+
 # PROJECT 3 REQUIREMENTS
 
 # DONE : Set focus on the first text field
 
-	•	When the page loads, give focus to the first text field
+		•	When the page loads, give focus to the first text field
  
 		# ”Job Role” section of the form:
 
