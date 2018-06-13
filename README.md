@@ -2,7 +2,7 @@
 
 # PROJECT 3 Summary
 
-	    requirements:
+      requirements:
                 all requirements completed and documented below by form section.
 
       exceeds :
