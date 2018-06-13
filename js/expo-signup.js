@@ -98,6 +98,7 @@ $(document).ready(function() {
 
   // function to move shirt color options under 2 const html node opt groups
   const getOptElements = function(){
+
     $('#color').children().each(function(i){
         if ($(this)[0].textContent.includes('JS Puns')) {
           let optionValue = $(this)[0].value;
@@ -160,11 +161,13 @@ $(document).ready(function() {
 
   // simple function to display total cost of activites
   const displayTotal = function(totalAmt){
+
     total.textContent = `Total: $${totalAmt}`;
     $('.activities').append(total);
   } // end displayTotal() function
 
   const displayPaymentOptions = function($optionValue){
+
     $('#payment option:selected').each(function(){
       if ($optionValue === 'credit card') {
         $('#payment').parent()[0].append(paymentOptions.children.namedItem('credit-card'));
@@ -218,6 +221,7 @@ $(document).ready(function() {
   }; // end getCCPaymentInfo function
 
   const buildErrMsgElement = function(errMsgText, idName){
+
     const errMsgElement = document.createElement('p');
     errMsgElement.setAttribute('id', idName);
     errMsgElement.textContent = errMsgText;
@@ -244,7 +248,7 @@ $(document).ready(function() {
         const shirtFieldSet = document.getElementsByClassName('shirt')[0];
 
         const noShirtSelectionErrMsg = "Don't forget to choose a shirt size, design and color";
-        noShirtErrMsgElmnt = buildErrMsgElement(noShirtSelectionErrMsg, 'noShirtErrMsg');
+        const noShirtErrMsgElmnt = buildErrMsgElement(noShirtSelectionErrMsg, 'noShirtErrMsg');
 
     // select and build eror message for activites Fieldset
         const activitesFieldSet = document.getElementsByClassName('activities')[0];
@@ -314,7 +318,7 @@ $(document).ready(function() {
       if (errMsg.ccNumErr || errMsg.zipCodeErr || errMsg.cvvErr && document.getElementById('CCerrInfoDiv') === null) {
         // if any errors on Credit Card input, add credit card err msg Div to html Page
         creditCardDiv.insertBefore(CCerrInfoDiv, creditCardDiv.children[3] );
-      } else if ( document.getElementById('CCerrInfoDiv') !== null ) {
+      } else if ( !errMsg.ccNumErr && !errMsg.zipCodeErr && !errMsg.cvvErr && document.getElementById('CCerrInfoDiv') !== null ) {
         $('#CCerrInfoDiv').remove('*');
       // if no credit card input field errors, remove the CCerrInfoDiv
       }
@@ -342,11 +346,9 @@ $(document).ready(function() {
         document.getElementById('cvv-ErrMsg').textContent = '';
       }
 
-    };
+    } // end if credit card div
 
-
-
-  } // end displayFormErrMsg function
+  }; // end displayFormErrMsg function
 
   // form validation object, flags and functions
   const formValidation = {
@@ -363,14 +365,14 @@ $(document).ready(function() {
              // for now, just checking that something was typed in this field
       if (!signUpRegistration.name) {
         // if name field blank, set nameErr to true
-        this.errMsg.nameErr = true;
+        formValidation.errMsg.nameErr = true;
       } else {
         // else nameErr is false
-        this.errMsg.nameErr = false;
+        formValidation.errMsg.nameErr = false;
       }
       // if there is invalid input, display err msgs
       // or remove err msgs if needed
-      this.inValidInputDisplayErrMsg();
+      formValidation.inValidInputDisplayErrMsg();
     }, // end verifyName
     verifyEmail:function(signUpRegistration){
 
@@ -385,54 +387,56 @@ $(document).ready(function() {
 
       if (!signUpRegistration.mail) {
         // if email field is blank, set emailBlankErr to true
-        this.errMsg.emailBlankErr = true;
+        formValidation.errMsg.emailBlankErr = true;
         // clear the other email error flag just in case
-        this.errMsg.emailFormatInvalid = false;
+        formValidation.errMsg.emailFormatInvalid = false;
       } else {
         // else emailBlankErr is false
-        this.errMsg.emailBlankErr = false;
+        formValidation.errMsg.emailBlankErr = false;
 
         if (!signUpRegistration.mail.match(emailFilter)){
           // if email input is not valid format, emailFormatInvalid is true
-          this.errMsg.emailFormatInvalid = true;
+          formValidation.errMsg.emailFormatInvalid = true;
           // clear the other email error flag just in case
-          this.errMsg.emailBlankErr = false;
+          formValidation.errMsg.emailBlankErr = false;
         } else {
           // else emailFormatInvalid is false
-          this.errMsg.emailFormatInvalid = false;
+          formValidation.errMsg.emailFormatInvalid = false;
         }
       }
       // if there is invalid input, display err msgs
       // or remove err msgs if needed
-      this.inValidInputDisplayErrMsg();
+      formValidation.inValidInputDisplayErrMsg();
     }, // end verifyEmail
     verifyShirtSelection:function(signUpRegistration){
 
         // check for valid shirt selection
         if (!signUpRegistration.shirtDesign) {
           // if no selection, err is true
-          this.errMsg.noShirtSelectionErr = true;
+          formValidation.errMsg.noShirtSelectionErr = true;
         } else {
           // else if there is selection, err is false
-          this.errMsg.noShirtSelectionErr = false;
+          formValidation.errMsg.noShirtSelectionErr = false;
         }
         // if there is invalid input, display err msgs
         // or remove err msgs if needed
-        this.inValidInputDisplayErrMsg();
+        formValidation.inValidInputDisplayErrMsg();
      },
      verifyActivities:function(signUpRegistration){
+
         // check for selection of activities
         if (!signUpRegistration.activities || signUpRegistration.totalCost === 0){
-          this.errMsg.activitesErr = true;
+          formValidation.errMsg.activitesErr = true;
         } else {
           // if an activity selected, err is false
-          this.errMsg.activitesErr = false;
+          formValidation.errMsg.activitesErr = false;
         }
         // if there is invalid input, display err msgs
         // or remove err msgs if needed
-        this.inValidInputDisplayErrMsg();
+        formValidation.inValidInputDisplayErrMsg();
     }, // end verifyActivities
     verifyPaymentInfo:function(signUpRegistration){
+
         // regExp filters for checking cc payment input
         const atLeast13atmost16Filter = /^[0-9]{13,16}$/;
         const zipCodeFilter = /^[0-9]{5}$/;
@@ -446,76 +450,85 @@ $(document).ready(function() {
           // check for valid cc number
 
           if ( parseInt(signUpRegistration.paymentInfo.ccNum).toString() === 'NaN'){
-            this.errMsg.ccNumErr = true; // if not a Number, err is true
+            formValidation.errMsg.ccNumErr = true; // if not a Number, err is true
             // parseInt(parseInt(signUpRegistration.paymentInfo.ccNum).toString().length < 13 || signUpRegistration.paymentInfo.ccNum).toString().length > 16
           } else if ( signUpRegistration.paymentInfo.ccNum.match(atLeast13atmost16Filter) === null){
-            this.errMsg.ccNumErr = true; // if not correct length, err is true
+            formValidation.errMsg.ccNumErr = true; // if not correct length, err is true
           } else {
-            this.errMsg.ccNumErr = false; // else no err
+            formValidation.errMsg.ccNumErr = false; // else no err
           }
 
           // check for valid zipcode
           if ( parseInt(signUpRegistration.paymentInfo.zip).toString() === 'NaN'){
-            this.errMsg.zipCodeErr = true; // if not a Number, err is true
+            formValidation.errMsg.zipCodeErr = true; // if not a Number, err is true
             // parseInt(signUpRegistration.paymentInfo.zip).toString().length !== 5
           } else if ( signUpRegistration.paymentInfo.zip.match(zipCodeFilter) === null ){
-            this.errMsg.zipCodeErr = true; // if not correct length, err is true
+            formValidation.errMsg.zipCodeErr = true; // if not correct length, err is true
           } else {
-            this.errMsg.zipCodeErr = false; // else no err
+            formValidation.errMsg.zipCodeErr = false; // else no err
           }
 
           // check for valid CVV code
           if ( parseInt(signUpRegistration.paymentInfo.cvv).toString() === 'NaN'){
-            this.errMsg.cvvErr = true; // if not a Number, err is true
+            formValidation.errMsg.cvvErr = true; // if not a Number, err is true
             // parseInt(signUpRegistration.paymentInfo.cvv).toString().length != 3
           } else if ( signUpRegistration.paymentInfo.cvv.match(cvvFilter) === null ){
-            this.errMsg.cvvErr = true; // if not correct length, err is true
+            formValidation.errMsg.cvvErr = true; // if not correct length, err is true
           } else {
-            this.errMsg.cvvErr = false; // else no err
+            formValidation.errMsg.cvvErr = false; // else no err
           }
 
         } // end if payment type = credit card
 
         // if there is invalid input, display err msgs
-        this.inValidInputDisplayErrMsg();
+        formValidation.inValidInputDisplayErrMsg();
     }, // end verifyPaymentInfo
     verifyAllRequiredFields:function(signUpRegistration){
-      this.verifyName(signUpRegistration);
-      this.verifyEmail(signUpRegistration);
-      this.verifyActivities(signUpRegistration);
-      this.verifyShirtSelection(signUpRegistration);
-      this.verifyPaymentInfo(signUpRegistration);
-      this.inValidReqFields = 0;
-      if (this.errMsg.nameErr) {
-        this.inValidReqFields += 1;
+
+
+      formValidation.verifyName(signUpRegistration);
+
+      formValidation.verifyEmail(signUpRegistration);
+
+      formValidation.verifyActivities(signUpRegistration);
+
+      formValidation.verifyShirtSelection(signUpRegistration);
+
+      formValidation.verifyPaymentInfo(signUpRegistration);
+
+      formValidation.inValidReqFields = 0;
+
+      if (formValidation.errMsg.nameErr) {
+        formValidation.inValidReqFields += 1;
       }
-      if (this.errMsg.emailBlankErr) {
-        this.inValidReqFields += 1;
+      if (formValidation.errMsg.emailBlankErr) {
+        formValidation.inValidReqFields += 1;
       }
-      if (this.errMsg.emailFormatInvalid) {
-        this.inValidReqFields += 1;
+      if (formValidation.errMsg.emailFormatInvalid) {
+        formValidation.inValidReqFields += 1;
       }
-      if (this.errMsg.noShirtSelectionErr) {
-        this.inValidReqFields += 1;
+      if (formValidation.errMsg.noShirtSelectionErr) {
+        formValidation.inValidReqFields += 1;
       }
-      if (this.errMsg.activitesErr) {
-        this.inValidReqFields += 1;
+      if (formValidation.errMsg.activitesErr) {
+        formValidation.inValidReqFields += 1;
       }
-      if (this.errMsg.noPaymentTypeErr) {
-        this.inValidReqFields += 1;
+      if (formValidation.errMsg.noPaymentTypeErr) {
+        formValidation.inValidReqFields += 1;
       }
-      if (this.errMsg.ccNumErr) {
-        this.inValidReqFields += 1;
+      if (formValidation.errMsg.ccNumErr) {
+        formValidation.inValidReqFields += 1;
       }
-      if (this.errMsg.zipCodeErr) {
-        this.inValidReqFields += 1;
+      if (formValidation.errMsg.zipCodeErr) {
+        formValidation.inValidReqFields += 1;
       }
-      if (this.errMsg.cvvErr) {
-        this.inValidReqFields += 1;
+      if (formValidation.errMsg.cvvErr) {
+        formValidation.inValidReqFields += 1;
       }
+
     }, // end verifyAllRequiredFields
     inValidInputDisplayErrMsg:function(){
-        displayFormErrMsg(this.errMsg);
+        displayFormErrMsg(formValidation.errMsg);
     } // end inValidInputDisplayErrMsg
 
   }; //end form validation object
@@ -525,12 +538,14 @@ $(document).ready(function() {
 
   // event listener for name field input
     $('#name').focusout(function(e){
+
       signUpRegistration.name = document.getElementById('name').value;
       formValidation.verifyName(signUpRegistration);
     });
 
   // event listener for email field input
     $('#mail').focusout(function(e){
+
       signUpRegistration.mail = document.getElementById('mail').value;
       formValidation.verifyEmail(signUpRegistration);
     });
@@ -538,6 +553,7 @@ $(document).ready(function() {
   // event listener for job title select value change
     // if job title changed to 'other' display other Job Role input field
     $('#title').change(function(e){
+
      if ($(this).val() === 'other') {
           document.getElementById('title').parentNode.append(otherJobRoleInput);
           otherJobTitleSelected = true;
@@ -557,6 +573,7 @@ $(document).ready(function() {
   // event listener for change in shirt design value
     // displaying only shirt colors that go with Shirt design theme
     $('#design').change(function(e){
+
       $('#design option:selected').each(function(){
         if ($(this).val() === 'heart js') {
           displayColorOptGroups( $colorOptions, $(this).val() );
@@ -575,6 +592,7 @@ $(document).ready(function() {
   // event listener for shirt color value
     // capture shirt size, design and color
     $('#color').focusin(function(e){
+
       signUpRegistration.shirtSize = document.getElementById('size').value;
       signUpRegistration.shirtDesign = document.getElementById('design').value;
       signUpRegistration.shirtColor = document.getElementById('color').value;
@@ -736,14 +754,17 @@ $(document).ready(function() {
     focusOnFirstField($nameInput);
 
 // FORM SUBMIT
-  document.getElementsByTagName('form')[0].addEventListener("submit", function(e){
-    formValidation.verifyAllRequiredFields(signUpRegistration);
+  $('form').submit(function(e){
+  // forums say best practice to prevent wierd behavior when binding
 
+    // check all input from all required fields
+    formValidation.verifyAllRequiredFields(signUpRegistration);
+    // if any fields are invalid..
     if (formValidation.inValidReqFields > 0){
+      // prevent defaul action (i.e. form submission)
       e.preventDefault();
     }
-  }, false);
 
-  // document.getElementsByTagName('button')[0].addEventListener('click', function(e){
-  // });
+  }); // end submit
+
 }); // end document ready function
