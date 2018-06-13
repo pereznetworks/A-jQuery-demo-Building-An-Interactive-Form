@@ -22,8 +22,8 @@
                 using code comments I separated it into 3 sections:
                   // Constant variables, // Functions // Event Listeners
                   
-                I treid to comment the my code well 
-                I'll go over the client-side form data and validation objects and object methods.
+                the code should be commented fairly well 
+                I'll go over the client-side signUpRegistration array and formValidation objects 
                 as well as meets and exceeds expectations requirements below
 
 # client-side form data and validation  
