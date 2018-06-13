@@ -43,7 +43,9 @@
         The signUpRegistration array values are read by the formValidation object methods.
           Any errors are tracked to a formValidation object
 
-        The $('Name').change event, the $('mail').change event and the $('.activities input') click event...
+        The $('Name').change event, 
+        the $('mail').change event 
+        and the $('.activities input') click event...
           call their respective formValidation object methods for real-time formValidation.
 
         All formValidation object methods are called by the $('form').submit event.
@@ -51,8 +53,10 @@
      displayFormErrMsg function:  
 
         Is called by the formValidation object methods. 
-          When there are errors, the displayFormErrMsg function tests formValidation object values for true or false 
-            and displays appropriate errors under the appropriate input field or selector
+          formValidation error objects are name after specific errors
+             i.e., emailBlankErr, invalidEmailFormat
+                thewse are tested for true or false 
+           displays appropriate errors under the appropriate input field or selector
 
       on Submit, a formValidation.inValidReqFields value is tested if 0, 
          if not 0, the form is not submitted and the errors are displayed.
