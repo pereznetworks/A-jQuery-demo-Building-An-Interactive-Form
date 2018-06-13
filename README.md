@@ -4,9 +4,7 @@
 
 	requirements : all requirements completed and documented below by form section.
 
-  exceeds :
-            All 3 exceeds features completed and documented below by form section.
-
+  exceeds : All 3 exceeds features completed and documented below by form section.
             The email input field gets conditional error messages.
             The name, email input field and activity fieldset get real-time error msgs
 
