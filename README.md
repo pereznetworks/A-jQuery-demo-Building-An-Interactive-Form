@@ -15,7 +15,7 @@
 
       css:          
                 I added styles for form validation error message elements
-
+                
       javaScript:
                 the file, exp-signup.js, contains all my JavaScript for this project.
                 using code comments I separated it into 3 sections:
