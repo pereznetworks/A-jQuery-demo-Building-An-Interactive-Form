@@ -11,7 +11,7 @@
                 the name, email input field and activity fieldset get real-time error msgs
 
       html:
-                An input element, id of 'other-title', placeholder of 'Your Job Role' is added to the index.html.  No other changes to html or css were made.
+                An input element, id of 'other-title', placeholder of 'Your Job Role' is added to the index.html.  
 
       css:          
                 I added styles for form validation error message elements
@@ -29,31 +29,40 @@
 
     signUpRegistration array:
 
-      As text is entered into input fields and selector choices are made, these are read as object/key values into the signUpRegistration array.
+      As text is entered into input fields and selector choices are made, 
+         these are read as object/key values into the signUpRegistration array.
 
-      The credit-card input fields and expiration date and year data are read into the signUpRegistration.paymentInfo array as object/key values.
+      The credit-card input fields and expiration date and year data 
+         are read into the signUpRegistration.paymentInfo array
 
     formValidation object and object methods:
 
       Each input field and selector fieldset has it's own formValidation method.
 
-      The signUpRegistration array values are read by the formValidation object methods. Any errors are tracked to a formValidation object
+      The signUpRegistration array values are read by the formValidation object methods.
+         Any errors are tracked to a formValidation object
 
-      The $('Name').change event, the $('mail').change event and the $('.activities input') click event call their respective formValidation object methods for real-time formValidation.
+      The $('Name').change event, the $('mail').change event and the $('.activities input') click event...
+          call their respective formValidation object methods for real-time formValidation.
 
       All formValidation object methods are called by the $('form').submit event.
 
     displayFormErrMsg function:  
 
-      Is called by the formValidation object methods. When there are errors, the displayFormErrMsg function tests formValidation object values for true or false and displays appropriate errors under the appropriate input field or selector
+      Is called by the formValidation object methods. 
+          When there are errors, the displayFormErrMsg function tests formValidation object values for true or false 
+             and displays appropriate errors under the appropriate input field or selector
 
-    on Submit, a formValidation.inValidReqFields value is tested if 0, if not the form is not submitted and the errors are displayed.
+      on Submit, a formValidation.inValidReqFields value is tested if 0, 
+            if not 0, the form is not submitted and the errors are displayed.
 
     For this project, the submit of the form simply resets the form.
 
 # Basic Info
 
-    Entire form, all input fields, t-shirt color drop-down menu choices, including the 'other-title' job role input field, are available and/or displayed when JavaScript is disabled.
+    Entire form, all input fields, t-shirt color drop-down menu choices, 
+        including the 'other-title' job role input field, 
+        are available and/or displayed when JavaScript is disabled.
 
     1:  Name input field, gets focus when the page first loads
 
@@ -68,7 +77,7 @@
     2:  Email input field
 
         form validation:
-              on submit, email format is verified to contain all three sections alias@somedomain.com/org/edu/etc..
+              on submit, email format is verified to contain all three sections alias@somedomain.com, org, edu, etc..
               a red text error message appears if email input is blank or is not properly formatted
 
         exceeds:  
@@ -98,12 +107,12 @@
               on submit , an error appears when no t-shirt size, design theme or color is selected
 
         exceeds:  hidden drop-down menu
-                  the t-shirt color drop down menu appears only when a t-shirt    design theme is selected
+                  the t-shirt color drop down menu appears only when a t-shirt design theme is selected
 
 # Activities
 
         a total cost, 'Total: $600', of selected activities appears at the bottom of this section.
-        the 'Total' is updated as activities are selected or deselected
+            the 'Total' is updated as activities are selected or deselected
 
         As activities are selected, activities with conflicting schedules are 'disabled', greyed out and not selectable.
 
@@ -111,12 +120,14 @@
                 on submit, an error appears when no activities are selected
 
         exceeds:  real-time error message
-                  once any activity is selected but then deselected, any no other activities are selected, then an red text error appears
-                  once any activity is selected then the error disappears
+                  once any activity is selected but then deselected, 
+                    and no other activities are selected, then an red text error appears
+                      once any activity is selected then the error disappears
 
 # Payment Info
 
-        The credit-card payment type is selected and the credit-card input fields and Expiration date drop menu appear, when the page loads
+        The credit-card payment type is selected 
+            and the credit-card input fields and Expiration date drop menu appear, when the page loads
 
         as other payment options are chosen, only that payment type is displayed
 
@@ -147,10 +158,14 @@
 
       3: Real-Time error messages
 
-        The email input field conditional error messages appear right away, as soon as the input field gets the cursor and user hits enter or the email input field gets and loses focus
+        The email input field conditional error messages appear right away, 
+            as soon as the input field gets the cursor and user hits enter or the email input field gets and loses focus
 
         The Name input field and Activity fieldset also have real-time error messages.  
 
-        If no text is entered in the name input field, an error appears. As soon as text is entered in the name input field the error disappears.
+        If no text is entered in the name input field, an error appears. 
+            as soon as text is entered in the name input field the error disappears.
 
-        Once any activity is selected but then deselected, any no other activities are selected then an red text error appears. Once any activity is selected then the error disappears,
+        Once any activity is selected but then deselected, 
+           and no other activities are selected then an red text error appears. 
+           Once any activity is selected then the error disappears,
