@@ -97,9 +97,7 @@
     3:  Job Role Selection
 
         when selecting 'other' job role, an input field with id of 'other-title' appears
-
         the 'other-title' input field disappears when another job-role is selected
-
         the 'other-title' input field is present when JavaScript is disabled
 
 # T-Shirt selection
@@ -168,9 +166,7 @@
       2: Condition Error messages
 
         the email input fields gets 2 different conditional error messages
-
         a 'blank' error msg appears when email input in blank
-
         an 'invalid format' error msg appears when the email is not properly formatted
 
       3: Real-Time error messages
