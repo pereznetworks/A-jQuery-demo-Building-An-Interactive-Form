@@ -1,5 +1,5 @@
 
-$(document).ready(function() {
+// $(document).ready(function() {
 
 // CONSTANT variables ------------------------------
 
@@ -256,6 +256,10 @@ $(document).ready(function() {
         const activitesErrMsg = 'Please choose from the activiies';
         const noActErrMsgElmnt = buildErrMsgElement(activitesErrMsg, 'noActErrMsgElmnt');
 
+    // each of the if/esle code blocks below ....
+      // if err flag for specific field is true, add err msg for that field blank
+      // checking the document element id of the err msg so only 1 error msg is displayed at a time
+
     // add err msg for Name field
     if (errMsg.nameErr && document.getElementById('nameBlankErrElmnt') === null) {
       const emailLabel = basicInfoFieldSet.children[3];
@@ -267,24 +271,41 @@ $(document).ready(function() {
       document.getElementById('name').style = 'padding-bottom:.8em;';
     }
 
-      // add err msg for Email field blank
+    // add err msg for Email field blank
     if (errMsg.emailBlankErr && document.getElementById('emailBlankMsgElmnt') === null) {
       document.getElementById('mail').style = 'margin-bottom:0;';
+      if ( document.getElementById('emailInvalidMsgElmnt') !== null ){
+        // remove err msg for invalid Email field
+        $('#emailInvalidMsgElmnt').remove('*');
+      }
       const titleLabel = document.getElementById('title').previousElementSibling;
       basicInfoFieldSet.insertBefore(emailBlankMsgElmnt, titleLabel);
     } else if (!errMsg.emailBlankErr && document.getElementById('emailBlankMsgElmnt') !== null){
+      // dont want to show more than 1 error at time
+      if ( document.getElementById('emailInvalidMsgElmnt') !== null ){
+        // remove err msg for invalid Email field
+        $('#emailInvalidMsgElmnt').remove('*');
+      }
       // remove err msg for blank Email field
       $('#emailBlankMsgElmnt').remove('*');
       document.getElementById('mail').style = 'padding-bottom:.8em;';
     }
 
+    // add err msg for Email field input invalid
     if (errMsg.emailFormatInvalid && document.getElementById('emailInvalidMsgElmnt') === null ) {
-      // add err msg for Email input invalid
+      if ( document.getElementById('emailBlankMsgElmnt') !== null ){
+        // remove err msg for invalid Email msg if present
+        $('#emailBlankMsgElmnt').remove('*');
+      }
       document.getElementById('mail').style = 'margin-bottom:0;';
       const titleLabel = document.getElementById('title').previousElementSibling;
       basicInfoFieldSet.insertBefore(emailInvalidMsgElmnt, titleLabel);
     } else if (!errMsg.emailFormatInvalid && document.getElementById('emailInvalidMsgElmnt') !== null ){
-      // remove err msg for invalid Email field
+      if ( document.getElementById('emailBlankMsgElmnt') !== null ){
+        // remove err msg for invalid Email msg if present
+        $('#emailBlankMsgElmnt').remove('*');
+      }
+      // remove err msg for invalid Email msg
       $('#emailInvalidMsgElmnt').remove('*');
       document.getElementById('mail').style = 'padding-bottom:.8em;';
     }
@@ -543,6 +564,16 @@ $(document).ready(function() {
   // event listener for email field input
     $('#mail').keyup(function(e){
 
+      // remove previous err msgs, if present
+      if ( document.getElementById('emailInvalidMsgElmnt') !== null ){
+        // remove err msg for invalid Email field
+        $('#emailInvalidMsgElmnt').remove('*');
+      } else if ( document.getElementById('emailBlankMsgElmnt') !== null ){
+        // remove err msg for blank Email field
+        $('#emailBlankMsgElmnt').remove('*');
+      }
+
+
       const basicInfoFieldSet = document.getElementById('name').parentNode;
       const titleLabel = document.getElementById('title').previousElementSibling;
       const emailFilter = /^[[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)]*$/;
@@ -775,4 +806,4 @@ $(document).ready(function() {
 
   }); // end submit
 
-}); // end document ready function
+// }); // end document ready function
