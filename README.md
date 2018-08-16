@@ -83,15 +83,15 @@
               a brown text error message appears if email input is blank or is not properly formatted
 
         exceeds:  
-              conditional error messages:
-              on submit,
-              a 'blank' error msg appears when email input in blank
-              an 'oops, invalid format' error msg appears when the email input is not properly formatted
-              the conditional error messages
+              conditional and real-time error messages:
+              on submit and as entering text,
+                an 'opps, please enter your email address' error msg
+                  appears when email input is blank
 
-              real-time error message, as the user types in the email input field
-              a "checking for valid email address format" appears
-              the error goes away once the email input is valid
+                an 'oops, invalid format' error msg
+                  appears when the email input is not properly formatted
+
+                these error msgs go away when input is finally validated 
 
     3:  Job Role Selection
 
