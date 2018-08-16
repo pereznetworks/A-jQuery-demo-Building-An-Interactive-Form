@@ -396,7 +396,7 @@
     verifyEmail:function(signUpRegistration){
 
       // regExp for checking email input
-        // taken from MDN articler on form validation
+        // taken from MDN article on form validation
           // - modified to return a match ONLY IF all three parts of email address are present
             // an alias (to left of @, the @ itself, any kind of domain name, and something following a '.'  )
               // however, not actually checking for real top-level domain like .com., org, .edu, .gov, etc...
@@ -409,19 +409,16 @@
         formValidation.errMsg.emailBlankErr = true;
         // clear the other email error flag just in case
         formValidation.errMsg.emailFormatInvalid = false;
-      } else {
-        // else emailBlankErr is false
-        formValidation.errMsg.emailBlankErr = false;
-
-        if (!signUpRegistration.mail.match(emailFilter)){
+      } else if (!signUpRegistration.mail.match(emailFilter)){
           // if email input is not valid format, emailFormatInvalid is true
           formValidation.errMsg.emailFormatInvalid = true;
           // clear the other email error flag just in case
           formValidation.errMsg.emailBlankErr = false;
-        } else {
+      } else {
           // else emailFormatInvalid is false
           formValidation.errMsg.emailFormatInvalid = false;
-        }
+          // clear email blank error flag just in case
+          formValidation.errMsg.emailBlankErr = false;
       }
       // if there is invalid input, display err msgs
       // or remove err msgs if needed
@@ -557,38 +554,40 @@
 
   // event listener for name field input
     $('#name').focusout(function(e){
-
       signUpRegistration.name = document.getElementById('name').value;
     });
 
   // event listener for email field input
     $('#mail').keyup(function(e){
+      // this call back function will run everytime a key registers 'up' after beign depressed
 
-      // remove previous err msgs, if present
-      if ( document.getElementById('emailInvalidMsgElmnt') !== null ){
-        // remove err msg for invalid Email field
-        $('#emailInvalidMsgElmnt').remove('*');
-      } else if ( document.getElementById('emailBlankMsgElmnt') !== null ){
-        // remove err msg for blank Email field
-        $('#emailBlankMsgElmnt').remove('*');
+      if (document.getElementById('mail').value.length !== 0 && e.which !== 9 ){
+        // dont start email input vaildation until user is typing chars other than a TAB key
+        signUpRegistration.mail = document.getElementById('mail').value;
+        // now validate email input
+        formValidation.verifyEmail(signUpRegistration);
+      } else if (e.which !== 9 ){
+        // if is it null, then user focused on email field, typed, then removed all the text typed
+        // anyways, just initialize email property as a null string
+        signUpRegistration.mail = '';
+        // now validate email input
+        formValidation.verifyEmail(signUpRegistration);
       }
 
+    });
 
-      const basicInfoFieldSet = document.getElementById('name').parentNode;
-      const titleLabel = document.getElementById('title').previousElementSibling;
-      const emailFilter = /^[[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)]*$/;
-      const checkingEmailformat = 'checking for valid email address format...';
-      const checkingEmailMsgElmnt = buildErrMsgElement(checkingEmailformat, 'emailInvalidMsgElmnt');
+    $('#mail').focusout(function(e){
+      // this callback functon wil run once focus has change to another element
 
-      if ( !$('#mail')[0].value.match(emailFilter)  ) {
-        $('#emailInvalidMsgElmnt').remove('*');
-        basicInfoFieldSet.insertBefore(checkingEmailMsgElmnt, titleLabel);
+      // can't really validate a null input, so test for it
+      if (document.getElementById('mail').value.length !== 0 ){
+        signUpRegistration.mail = document.getElementById('mail').value;
       } else {
-        $('#emailInvalidMsgElmnt').remove('*');
-        document.getElementById('mail').style = 'padding-bottom:.8em;';
+        // if is it null, just initialize email property as a null string
+        signUpRegistration.mail = '';
       }
-
-      signUpRegistration.mail = document.getElementById('mail').value;
+      // then do form validation
+      formValidation.verifyEmail(signUpRegistration)
     });
 
   // event listener for job title select value change
