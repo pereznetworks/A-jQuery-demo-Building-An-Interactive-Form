@@ -18,15 +18,17 @@
   - I added styles for form validation error message elements
 
 ### javaScript:
-  - all original code, expo-signup.js, contains the JavaScript for this project.
+
+#### all original code is in, expo-signup.js,
+  - contains the JavaScript for this project.
   - using code comments separated it into 3 sections:
   - // Constant variables, // Functions // Event Listeners
 
-- front-end stuff only
-  - to a beginner, there seems to be lots of code here
-  - however, all this is client-side form input and data validation only
+#### front-end stuff only
+    - to a beginner, there seems to be lots of code here
+    - however, all this is client-side form input and data validation only
 
-- signUpRegistration array:
+#### signUpRegistration array:
 
   - As text is entered into input fields and selector choices are made,
     - these are read as object/key values into the signUpRegistration array.
@@ -34,7 +36,8 @@
   - The credit-card input fields and expiration date and year data
     - are read into the signUpRegistration.paymentInfo array
 
-- formValidation object and object methods:
+
+#### formValidation object and object methods:
 
   - Each input field and selector fieldset has it's own formValidation method.
 
@@ -48,7 +51,8 @@
 
   - All formValidation object methods are called by the $('form').submit event.
 
-- displayFormErrMsg function:  
+
+#### displayFormErrMsg function:  
 
   - Is called by the formValidation object methods.
     - formValidation error objects are name after specific errors
