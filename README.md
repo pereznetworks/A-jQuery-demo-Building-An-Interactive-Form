@@ -4,6 +4,8 @@
 
 - Eventually, it will adapted to be a how-to tutorial
 
+- this is a DEMO project only, the submit action of the form simply resets the form.
+
 ## Form Code Features
 
 ### html:
@@ -57,8 +59,7 @@
     - if not 0, the form is not submitted and the errors are displayed.
 
   - this is a DEMO project only, the submit action of the form simply resets the form.
-    - other best-practice stuff that should be part of the actual form code
-    - there is no back-end server that receives submission
+    - other best-practice stuff that should be part of the actual form code, there is no back-end server that receives submission
     - this is just a demo
 
 # Form Interaction
