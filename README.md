@@ -1,4 +1,4 @@
-# Demonstrating Form Validation and Data Objects - Building An Interactive Form
+# Demonstrating jQuery functionality - Building An Interactive Form
 
 - This project was originally built as part of TeamTreehouse, Tech Degree, Full Stack JavaScript
 
