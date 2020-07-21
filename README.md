@@ -23,8 +23,8 @@
   - // Constant variables, // Functions // Event Listeners
 
 - front-end stuff only
-  - to a beginner, there seems to be lots of code here, but
-  - all this is client-side form input and data validation only
+  - to a beginner, there seems to be lots of code here
+  - however, all this is client-side form input and data validation only
 
 - signUpRegistration array:
 
