@@ -1,8 +1,8 @@
 # Demonstrating jQuery functionality - Building An Interactive Form
 
-- This project was originally built as part of TeamTreehouse, Tech Degree, Full Stack JavaScript
-
 - Eventually, it will adapted to be a how-to tutorial
+
+- This project was originally built as part of TeamTreehouse, Tech Degree, Full Stack JavaScript
 
 - this is a DEMO project only, the submit action of the form simply resets the form.
 
