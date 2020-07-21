@@ -19,7 +19,7 @@
 
 ### javaScript:
 
-#### all original code is in, expo-signup.js,
+#### all original code is in expo-signup.js,
   - contains the JavaScript for this project.
   - using code comments separated it into 3 sections:
   - // Constant variables, // Functions // Event Listeners
