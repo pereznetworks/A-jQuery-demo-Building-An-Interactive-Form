@@ -23,7 +23,7 @@
 ### the code should be commented fairly well
   - I'll go over the client-side signUpRegistration array and formValidation objects
 
-### this is client-side form data and validation only
+### this is client-side form input and data validation only
 
 - signUpRegistration array:
 
