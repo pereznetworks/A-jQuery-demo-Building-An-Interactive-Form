@@ -9,21 +9,22 @@
 ## Form Code Features
 
 ### html:
+- html provided by TeamTreehouse
 - An input element, id of 'other-title',
   - placeholder of 'Your Job Role' is added to the index.html.  
 
-### css:          
+### css:
+  - css provided by TeamTreehouse
   - I added styles for form validation error message elements
 
 ### javaScript:
-  - the file, exp-signup.js, contains all my JavaScript for this project.
-  - using code comments I separated it into 3 sections:
+  - all original code, expo-signup.js, contains the JavaScript for this project.
+  - using code comments separated it into 3 sections:
   - // Constant variables, // Functions // Event Listeners
 
-### the code should be commented fairly well
-  - I'll go over the client-side signUpRegistration array and formValidation objects
-
-### this is client-side form input and data validation only
+- front-end stuff only
+  - to a beginner, there seems to be lots of code here, but
+  - all this is client-side form input and data validation only
 
 - signUpRegistration array:
 
