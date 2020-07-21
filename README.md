@@ -1,171 +1,173 @@
-# TD-Project3  Build An Interactive Form
+# TD-Project3  Demonstrating Form Validation and Data Objects - Building An Interactive Form
 
-part of TeamTreehouse, Tech Degree, Full Stack JavaScript, Unit 3
+- This project was originally built as part of TeamTreehouse, Tech Degree, Full Stack JavaScript
 
-# PROJECT 3 Summary
+- Eventually, it will adapted to be a how-to tutorial
 
-      requirements:
-                all requirements completed and documented below by form section.
+## PROJECT 3 Summary
 
-      exceeds :
-                all 3 exceeds features completed and documented below by form section.
-                the email input field gets conditional error messages.
-                the email input field also gets real-time error msgs
+### additional cool features
 
-      html:
-                An input element, id of 'other-title',
-                    placeholder of 'Your Job Role' is added to the index.html.  
+#### html:
+- An input element, id of 'other-title',
+  - placeholder of 'Your Job Role' is added to the index.html.  
 
-      css:          
-                I added styles for form validation error message elements
+#### css:          
+  - I added styles for form validation error message elements
 
-      javaScript:
-                the file, exp-signup.js, contains all my JavaScript for this project.
-                using code comments I separated it into 3 sections:
-                  // Constant variables, // Functions // Event Listeners
+#### javaScript:
+  - the file, exp-signup.js, contains all my JavaScript for this project.
+  - using code comments I separated it into 3 sections:
+  - // Constant variables, // Functions // Event Listeners
 
-                the code should be commented fairly well
-                I'll go over the client-side signUpRegistration array and formValidation objects
-                as well as meets and exceeds expectations requirements below
+#### the code should be commented fairly well
+  - I'll go over the client-side signUpRegistration array and formValidation objects
 
-# client-side form data and validation  
+#### client-side form data and validation  
 
-    signUpRegistration array:
+- signUpRegistration array:
 
-        As text is entered into input fields and selector choices are made,
-           these are read as object/key values into the signUpRegistration array.
+  - As text is entered into input fields and selector choices are made,
+    - these are read as object/key values into the signUpRegistration array.
 
-        The credit-card input fields and expiration date and year data
-           are read into the signUpRegistration.paymentInfo array
+  - The credit-card input fields and expiration date and year data
+    - are read into the signUpRegistration.paymentInfo array
 
-    formValidation object and object methods:
+- formValidation object and object methods:
 
-        Each input field and selector fieldset has it's own formValidation method.
+  - Each input field and selector fieldset has it's own formValidation method.
 
-        The signUpRegistration array values are read by the formValidation object methods.
-          Any errors are tracked to a formValidation object
+  - The signUpRegistration array values are read by the formValidation object methods.
+    - Any errors are tracked to a formValidation object
 
-        The $('Name').change event,
-        the $('mail').change event
-        and the $('.activities input') click event...
-          call their respective formValidation object methods for real-time formValidation.
+    - The $('Name').change event,
+    - the $('mail').change event
+    - and the $('.activities input') click event...
+      -each call their respective formValidation object methods for real-time formValidation.
 
-        All formValidation object methods are called by the $('form').submit event.
+  - All formValidation object methods are called by the $('form').submit event.
 
-     displayFormErrMsg function:  
+- displayFormErrMsg function:  
 
-        Is called by the formValidation object methods.
-          formValidation error objects are name after specific errors
-             i.e., emailBlankErr, invalidEmailFormat
-                these are tested for true or false
-           displays appropriate errors under the appropriate input field or selector
+  - Is called by the formValidation object methods.
+    - formValidation error objects are name after specific errors
+      - i.e., emailBlankErr, invalidEmailFormat
+      - these are tested for true or false
+    - displays appropriate errors under the appropriate input field or selector
 
-      on Submit, a formValidation.inValidReqFields value is tested if 0,
-         if not 0, the form is not submitted and the errors are displayed.
+  - on Submit, a formValidation.inValidReqFields value is tested if 0,
+    - if not 0, the form is not submitted and the errors are displayed.
 
-      for this project, the submit action of the form simply resets the form.
+  - this is a DEMO project only, the submit action of the form simply resets the form.
+    - other best-practice stuff that should be part of the actual form code
+    - there is no back-end server that receives submission
+    - this is just a demo
 
-# Basic Info
+# Basic Form Interaction
 
-    Entire form, all input fields, t-shirt color drop-down menu choices,
-        including the 'other-title' job role input field,
-        are available and/or displayed when JavaScript is disabled.
+## When JavaScript is disabled the fields all field choices are displayed
+  - When JavaScript is disabled
+    - the entire form, all input fields, t-shirt color drop-down menu choices,
+    - including the 'other-title' job role input field,
+    - are listed as non-interactive html
 
-    1:  Name input field, gets focus when the page first loads
+## When JavaScript is enabled
 
-        form validation:
-              on submit, verifies name input is not blank
-              brown text error msg appears when name input is blank
+### 1: Name input field, gets focus when the page first loads
 
-    2:  Email input field
+- form validation:
+  - on submit, verifies name input is not blank
+  - brown text error msg appears when name input is blank
 
-        form validation:
-              on submit, email format is verified to contain all three sections
-                alias@somedomain.com, org, edu, etc..
-              a brown text error message appears if email input is blank or is not properly formatted
+### 2: Email input field
 
-        exceeds:  
-              conditional and real-time error messages:
-              on submit and as entering text,
-                an 'opps, please enter your email address' error msg
-                  appears when email input is blank
+  - form validation:
+    - on submit, email format is verified to contain all three sections
+    - alias@somedomain.com, org, edu, etc..
+    - a brown text error message appears if email input is blank or is not properly formatted
 
-                an 'oops, invalid format' error msg
-                  appears when the email input is not properly formatted
+  - more advanced functionality:  
+    - conditional and real-time error messages:
 
-                these error msgs go away when input is finally validated 
+    - on submit and as entering text,
 
-    3:  Job Role Selection
+    - an 'opps, please enter your email address' error msg appears when email input is blank
 
-        when selecting 'other' job role, an input field with id of 'other-title' appears
-        the 'other-title' input field disappears when another job-role is selected
-        the 'other-title' input field is present when JavaScript is disabled
+    - an 'oops, invalid format' error msg
+      appears when the email input is not properly formatted
 
-# T-Shirt selection
+    - these error msgs go away when input is finally validated
 
-        when selecting t-shirt design and color,
-           shows only the t-shirt colors available with that design theme
+### 3: Job Role Selection
 
-        the option 'Select Theme' is disabled
-           so it serves only as a label, and is not selectable
+  - when selecting 'other' job role, an input field with id of 'other-title' appears
+  - the 'other-title' input field disappears when another job-role is selected
+  - along with other choices, the 'other-title' choice is also displayed when JavaScript is disabled
 
-        all t-shirt colors are available when JavaScript is disabled
+### T-Shirt selection
 
-        form validation:
-              on submit, an error appears when
-                no t-shirt size, design theme or color is selected
+- when selecting t-shirt design and color,
+  - shows only the t-shirt colors available with that design theme
 
-        exceeds:  hidden drop-down menu
-                  the t-shirt color drop down menu appears only when...
-                    a t-shirt design theme is selected
+- the option 'Select Theme' is disabled
+  - so it serves only as a label, and is not selectable
 
-# Activities
+- all t-shirt colors are available when JavaScript is disabled
 
-        a total cost, 'Total: $600', of selected activities
-           appears at the bottom of this section.
-           the 'Total' is updated as activities are selected or deselected
+- form validation:
+  - on submit, an error appears when
+  - no t-shirt size, design theme or color is selected
 
-        As activities are selected,
-            activities with conflicting schedules are
-              'disabled', greyed out and not selectable.
+- advanced functionality:  hidden drop-down menu
+  - only when a t-shirt design theme is selected
+    - will the t-shirt color drop down menu appear
 
-        form validation:
-                on submit, an error appears when no activities are selected
+### Activities
 
+- a total cost, 'Total: $600', of selected activities
+  - appears at the bottom of this section.
+  - the 'Total' is updated as activities are selected or deselected
 
-# Payment Info
+- As activities are selected,
+  - activities with conflicting schedules are
+  - 'disabled', greyed out and not selectable.
 
-        when the page loads
-           the credit-card payment type is selected
-            and the credit-card input fields and Expiration date drop menu appear,
+- form validation:
+  - on submit, an error appears when no activities are selected
 
-        as other payment options are chosen, only that payment type is displayed
+### Payment Info
 
-        form validation:
-                on submit,
+- when the page loads
+  - the credit-card payment type is selected
+  - and the credit-card input fields and Expiration date drop menu appear,
 
-                credit-card number is verified to be between 13 to 16 digits, numbers only
+- as other payment options are chosen, only that payment type is displayed
 
-                zip-code is verified to be 5 digits and numbers only
+- form validation:
+  - on submit,
 
-                cvv is verified to be 3 digits and numbers only
+  - credit-card number is verified to be between 13 to 16 digits, numbers only
 
-                if above input requirements are not met
-                   a brown text error appear directly under each field
+  - zip-code is verified to be 5 digits and numbers only
 
-# Exceeds:
+  - cvv is verified to be 3 digits and numbers only
 
-      1: T-Shirt hidden drop-down menu
+  - if above input requirements are not met
+    - a brown text error appear directly under each field
 
-        the t-shirt color drop down menu appears only when a t-shirt design theme is selected
+## Advanced functionality:
 
-      2: Condition Error messages
+### 1: T-Shirt hidden drop-down menu
 
-        the email input fields gets 2 different conditional error messages
-        a 'Oops, please, fill in your email address' error msg appears when email input in blank
-        an 'invalid format' error msg appears when the email is not properly formatted
+- the t-shirt color drop down menu appears only when a t-shirt design theme is selected
 
-      3: Real-Time error messages
+### 2: Condition Error messages
 
-        as the user types in the email field
-          a message appears, "checking for correctly formatted email address"
+- the email input fields gets 2 different conditional error messages
+  - a 'Oops, please, fill in your email address' error msg appears when email input in blank
+  - an 'invalid format' error msg appears when the email is not properly formatted
+
+### 3: Real-Time error messages
+
+- as the user types in the email field
+  - a message appears, "checking for correctly formatted email address"
