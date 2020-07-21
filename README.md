@@ -4,26 +4,24 @@
 
 - Eventually, it will adapted to be a how-to tutorial
 
-## PROJECT 3 Summary
+## Form Code Features
 
-### additional cool features
-
-#### html:
+### html:
 - An input element, id of 'other-title',
   - placeholder of 'Your Job Role' is added to the index.html.  
 
-#### css:          
+### css:          
   - I added styles for form validation error message elements
 
-#### javaScript:
+### javaScript:
   - the file, exp-signup.js, contains all my JavaScript for this project.
   - using code comments I separated it into 3 sections:
   - // Constant variables, // Functions // Event Listeners
 
-#### the code should be commented fairly well
+### the code should be commented fairly well
   - I'll go over the client-side signUpRegistration array and formValidation objects
 
-#### client-side form data and validation  
+### this is client-side form data and validation only
 
 - signUpRegistration array:
 
@@ -63,23 +61,23 @@
     - there is no back-end server that receives submission
     - this is just a demo
 
-# Basic Form Interaction
+# Form Interaction
 
-## When JavaScript is disabled the fields all field choices are displayed
-  - When JavaScript is disabled
-    - the entire form, all input fields, t-shirt color drop-down menu choices,
-    - including the 'other-title' job role input field,
-    - are listed as non-interactive html
+## When JavaScript is disabled
+
+  - When JavaScript is disabled everything is listed as non-interactive html
+    - the entire form, all input fields, t-shirt color drop-down menu choices
+    - including the 'other-title' job role input field
 
 ## When JavaScript is enabled
 
-### 1: Name input field, gets focus when the page first loads
+### Name input field, gets focus when the page first loads
 
 - form validation:
   - on submit, verifies name input is not blank
   - brown text error msg appears when name input is blank
 
-### 2: Email input field
+### Email input field
 
   - form validation:
     - on submit, email format is verified to contain all three sections
@@ -98,7 +96,7 @@
 
     - these error msgs go away when input is finally validated
 
-### 3: Job Role Selection
+### Job Role Selection
 
   - when selecting 'other' job role, an input field with id of 'other-title' appears
   - the 'other-title' input field disappears when another job-role is selected
@@ -154,20 +152,3 @@
 
   - if above input requirements are not met
     - a brown text error appear directly under each field
-
-## Advanced functionality:
-
-### 1: T-Shirt hidden drop-down menu
-
-- the t-shirt color drop down menu appears only when a t-shirt design theme is selected
-
-### 2: Condition Error messages
-
-- the email input fields gets 2 different conditional error messages
-  - a 'Oops, please, fill in your email address' error msg appears when email input in blank
-  - an 'invalid format' error msg appears when the email is not properly formatted
-
-### 3: Real-Time error messages
-
-- as the user types in the email field
-  - a message appears, "checking for correctly formatted email address"
