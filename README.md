@@ -1,4 +1,4 @@
-# TD-Project3  Demonstrating Form Validation and Data Objects - Building An Interactive Form
+# Demonstrating Form Validation and Data Objects - Building An Interactive Form
 
 - This project was originally built as part of TeamTreehouse, Tech Degree, Full Stack JavaScript
 
