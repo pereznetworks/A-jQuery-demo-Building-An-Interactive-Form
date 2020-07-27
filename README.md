@@ -7,7 +7,7 @@
 - this is a DEMO project only, the submit action of the form simply resets the form.
 
 #### A live version of this demo 
-  - https://pereznetworks.github.io/A-jQuery-Demo-A-Pagination-and-Content-Filter/
+ - https://pereznetworks.github.io/A-jQuery-demo-Building-An-Interactive-Form
 
 ## Form Code Features
 
