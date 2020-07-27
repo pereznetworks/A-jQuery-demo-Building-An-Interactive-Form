@@ -6,6 +6,9 @@
 
 - this is a DEMO project only, the submit action of the form simply resets the form.
 
+#### A live version of this demo 
+  - https://github.com/pereznetworks/A-jQuery-demo-Building-An-Interactive-Form
+
 ## Form Code Features
 
 ### html:
